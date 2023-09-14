@@ -11,7 +11,24 @@ coords = [(-1.540704504417448,53.806167806881845),(-1.5358874132664084,53.804260
 
 client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a') # Specify your personal API key
 routes = directions(client, coords) # Now it shows you all arguments for .directions
-print(routes)
+
+def extract_coordinates_from_response(response):
+    try:
+        coordinates = []
+        for step in response['routes'][0]['segments'][0]['steps']:
+            coordinates.extend(step['way_points'])
+        
+        # Convert the coordinates to a list of tuples with (longitude, latitude)
+        coordinates = [(coord[1], coord[0]) for coord in coordinates]
+
+        return coordinates
+    except (KeyError, IndexError):
+        return []
+
+
+# Extract and print the coordinates
+coordinates_only = extract_coordinates_from_response(routes)
+print(coordinates_only)
 
 #Creating the app class
 class App(customtkinter.CTk):

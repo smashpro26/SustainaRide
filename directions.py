@@ -9,11 +9,8 @@ client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be
 start_coords = (-1.540704504417448,53.806167806881845)
 end_coords = (-1.5358874132664084,53.80426084639122)
 
-directions = client.directions(
-    coordinates=[start_coords, end_coords],
-    profile='driving-car',
-    format="json"
-)
+directions = client.directions(coordinates=[start_coords, end_coords], profile='driving-car',format="json")
+
 if 'features' in directions and len(directions['features']) > 0:
-    for coord in directions['features'][0]['geometry']['coordinates']:
-        print(coord)
+    for coordinates in directions['features'][0]['geometry']['coordinates']:
+        print(coordinates)
