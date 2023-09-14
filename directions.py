@@ -12,7 +12,7 @@ end_coords = (-1.5358874132664084,53.80426084639122)
 directions = client.directions(
     coordinates=[start_coords, end_coords],
     profile='driving-car',
-    format='json'
+    format="WKT"
 )
 print(directions)
 
