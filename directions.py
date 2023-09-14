@@ -14,7 +14,6 @@ directions = client.directions(
     profile='driving-car',
     format="json"
 )
-print(directions)
 
 # Extract and print only the coordinates
 if 'features' in directions:
