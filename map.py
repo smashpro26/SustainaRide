@@ -93,7 +93,7 @@ class App(customtkinter.CTk):
 
         # Set default values
         self.map_widget.set_address("Berlin")
-        self.map_option_menu.set("Google normal")
+        #self.map_option_menu.set("Google normal")
         self.appearance_mode_optionemenu.set("Dark")
 
     def search_event(self, event=None):
