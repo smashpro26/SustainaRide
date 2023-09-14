@@ -16,10 +16,13 @@ def extract_coordinates_from_response(response):
     try:
         coordinates = []
         for step in response['routes'][0]['segments'][0]['steps']:
-            coordinates.extend(step['way_points'])
+            if 'way_points' in step:
+                coordinates.append(step['way_points'])
         
-        # Convert the coordinates to a list of tuples with (longitude, latitude)
-        coordinates = [(coord[1], coord[0]) for coord in coordinates]
+        # Check if there are any coordinates to extract
+        if coordinates:
+            # Flatten the list and convert the coordinates to a list of tuples with (longitude, latitude)
+            coordinates = [(coord[1], coord[0]) for sublist in coordinates for coord in sublist]
 
         return coordinates
     except (KeyError, IndexError):
