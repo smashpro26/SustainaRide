@@ -112,11 +112,16 @@ class App(customtkinter.CTk):
     def search_event(self, event=None):
         self.map_widget.set_address(self.entry.get())
 
+
+    
+
     #set a marker at a specific position
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
-
+        if len(self.marker_list) == 2:
+            path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
+ 
     #clears the placed marker
     def clear_marker_event(self):
         for marker in self.marker_list:
