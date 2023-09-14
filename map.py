@@ -7,7 +7,7 @@ from tkintermapview import TkinterMapView
 
 customtkinter.set_default_color_theme("blue")
 
-coords = ((53.7974185, -1.5437941000000137),(53.79499,1.54181))
+coords = [(-1.540704504417448,53.806167806881845),(-1.5358874132664084,53.80426084639122)]
 
 client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a') # Specify your personal API key
 routes = directions(client, coords) # Now it shows you all arguments for .directions
