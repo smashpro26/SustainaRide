@@ -12,9 +12,13 @@ end_coords = (-1.5358874132664084,53.80426084639122)
 directions = client.directions(
     coordinates=[start_coords, end_coords],
     profile='driving-car',
-    format="WKT"
+    format="json"
 )
 print(directions)
 
-
-  
+# Extract and print only the coordinates
+if 'features' in directions:
+    for feature in directions['features']:
+        if 'geometry' in feature:
+            coordinates = feature['geometry']['coordinates']
+            print(coordinates)
