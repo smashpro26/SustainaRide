@@ -4,6 +4,7 @@ import openrouteservice
 from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
+import polyline
 
 customtkinter.set_default_color_theme("blue")
 
@@ -14,24 +15,16 @@ routes = directions(client, coords) # Now it shows you all arguments for .direct
 
 def extract_coordinates_from_response(response):
     try:
-        coordinates = []
-        for step in response['routes'][0]['segments'][0]['steps']:
-            if 'way_points' in step:
-                coordinates.append(step['way_points'])
-        
-        # Check if there are any coordinates to extract
-        if coordinates:
-            # Flatten the list and convert the coordinates to a list of tuples with (longitude, latitude)
-            coordinates = [(coord[1], coord[0]) for sublist in coordinates for coord in sublist]
+        geometry = response['routes'][0]['geometry']
+        # Decode the polyline to get the list of coordinates
+        coordinates = polyline.decode(geometry)
 
         return coordinates
     except (KeyError, IndexError):
         return []
-
-
-# Extract and print the coordinates
 coordinates_only = extract_coordinates_from_response(routes)
 print(coordinates_only)
+
 
 #Creating the app class
 class App(customtkinter.CTk):
