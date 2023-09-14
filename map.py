@@ -1,9 +1,17 @@
 #importing packages
 
+import openrouteservice
+from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
 
 customtkinter.set_default_color_theme("blue")
+
+coords = ((53.7974185, -1.5437941000000137),(53.7980618159815, -1.5029776480180885))
+
+client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a') # Specify your personal API key
+routes = directions(client, coords) # Now it shows you all arguments for .directions
+print(routes)
 
 #Creating the app class
 class App(customtkinter.CTk):
@@ -112,15 +120,14 @@ class App(customtkinter.CTk):
     def search_event(self, event=None):
         self.map_widget.set_address(self.entry.get())
 
-
-    
-
     #set a marker at a specific position
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
         if len(self.marker_list) == 2:
             path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
+            print(self.marker_list[0].position)
+            print(self.marker_list[1].position)
  
     #clears the placed marker
     def clear_marker_event(self):
