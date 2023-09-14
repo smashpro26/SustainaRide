@@ -6,8 +6,8 @@ import warnings
 
 client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a')
 
-start_coords = (52.57, 13.4)
-end_coords = (52.55, 13.35)
+start_coords = (53.7974185, -1.5437941000000137)
+end_coords = (53.7980618159815, -1.5029776480180885)
 
 directions = client.directions(
     coordinates=[start_coords, end_coords],
