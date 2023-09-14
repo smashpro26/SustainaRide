@@ -57,7 +57,7 @@ class App(customtkinter.CTk):
 
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
         self.map_label.grid(row=3, column=0, padx=(20, 20), pady=(20, 0))
-        self.map_option_menu = customtkinter.CTkOptionMenu(self.frame_left, values=["OpenStreetMap", "Google normal", "Google satellite"],
+        self.map_option_menu = customtkinter.CTkOptionMenu(self.frame_left, values=[ "Google normal", "Google satellite"],
                                                                        command=self.change_map)
         self.map_option_menu.grid(row=4, column=0, padx=(20, 20), pady=(10, 0))
 
@@ -113,8 +113,6 @@ class App(customtkinter.CTk):
     def change_map(self, new_map: str):
         if new_map == "Google normal":
             self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
-        elif new_map == "OpenStreetMap":
-            self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
         elif new_map == "Google satellite":
             self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
 
