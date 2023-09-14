@@ -14,10 +14,6 @@ directions = client.directions(
     profile='driving-car',
     format="json"
 )
-
-# Extract and print only the coordinates
-if 'features' in directions:
-    for feature in directions['features']:
-        if 'geometry' in feature:
-            coordinates = feature['geometry']['coordinates']
-            print(coordinates)
+if 'features' in directions and len(directions['features']) > 0:
+    for coord in directions['features'][0]['geometry']['coordinates']:
+        print(coord)
