@@ -11,9 +11,12 @@ class App(customtkinter.CTk):
     APP_NAME = "TkinterMapView with CustomTkinter"
     WIDTH = 800
     HEIGHT = 500
+    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        
 
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -74,6 +77,8 @@ class App(customtkinter.CTk):
 
         self.map_widget = TkinterMapView(self.frame_right, corner_radius=0)
         self.map_widget.grid(row=1, rowspan=1, column=0, columnspan=3, sticky="nswe", padx=(0, 0), pady=(0, 0))
+        self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
+        print("Got here")
 
         self.entry = customtkinter.CTkEntry(master=self.frame_right,
                                             placeholder_text="type address")
@@ -106,10 +111,10 @@ class App(customtkinter.CTk):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
     def change_map(self, new_map: str):
-        if new_map == "OpenStreetMap":
-            self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
-        elif new_map == "Google normal":
+        if new_map == "Google normal":
             self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
+        elif new_map == "OpenStreetMap":
+            self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
         elif new_map == "Google satellite":
             self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
 
