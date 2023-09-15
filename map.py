@@ -17,9 +17,8 @@ class App(customtkinter.CTk):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-       
-        self.get_coords_for_route()
 
+        self.path_1 = None
         #Configuring the window
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -117,22 +116,34 @@ class App(customtkinter.CTk):
     #set a marker at a specific position
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
+        global path_1
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
         if len(self.marker_list) == 2:
-            path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
-            
-            
+            self.path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
+            start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
+            coords = directions.extract_coordinates_from_response(start_and_end_point)
+            print(coords)
+        
  
     #clears the placed marker
     def clear_marker_event(self):
         for marker in self.marker_list:
             marker.delete()
+        self.path_1.delete()
+            
+        
+
+        
     
+
+        
+        
     
+    '''
     def get_coords_for_route(self):
         start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
         coords = directions.extract_coordinates_from_response(start_and_end_point)
-        print(coords)
+        print(coords)'''
 
 
     #ability to change from dark or light mode
