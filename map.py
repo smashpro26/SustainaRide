@@ -119,11 +119,21 @@ class App(customtkinter.CTk):
 
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
         if len(self.marker_list) == 2:
-            self.path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
+            
             start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
             coords = directions.extract_coordinates_from_response(start_and_end_point)
+            self.path_1 = self.map_widget.set_path([self.marker_list[0].position, coords[1] ])
             print(coords)
-        
+            start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
+            for i in range(len(coords)):
+                deg_x =coords[i][0]
+                deg_y =coords[i][1]
+                print(deg_y)
+                self.path_1.add_position(deg_x,deg_y) 
+                
+
+    
+
  
     #clears the placed marker(s) and path 
     def clear_marker_event(self):
