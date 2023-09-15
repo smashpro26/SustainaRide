@@ -4,7 +4,7 @@ from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
 import directions
-
+from bard_ai import bard_GetAnswer
 customtkinter.set_default_color_theme("blue")
 
 #Creating the app class
@@ -56,6 +56,9 @@ class App(customtkinter.CTk):
         #makes the 3rd row expand when there is space avaliable e.g. when parent widget is resized 
 
         
+
+
+        
         #Creating a button for adding a marker on the map
         self.button_1 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Set Marker",
@@ -67,6 +70,13 @@ class App(customtkinter.CTk):
                                                 text="Clear Markers",
                                                 command=self.clear_marker_event)
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
+
+        
+        self.textframe = customtkinter.CTkScrollableFrame(master=self.frame_left, label_text="RoutePlan")
+        self.textframe.grid(pady=(20, 0), padx=(20,20), row=2, column=0)
+        
+
+
 
         #A label and option menu for changing tile servers (Google maps and google satellite)
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
@@ -120,20 +130,22 @@ class App(customtkinter.CTk):
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
         if len(self.marker_list) >= 2:
             
-            start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
-            coords = directions.extract_coordinates_from_response(start_and_end_point)
+            self.start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
+            coords = directions.extract_coordinates_from_response(self.start_and_end_point)
             self.path_1 = self.map_widget.set_path([self.marker_list[0].position, coords[1] ])
-            print(coords)
-            start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
+            #print(coords)
+            self.start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
             for i in range(len(coords)):
                 deg_x =coords[i][0]
                 deg_y =coords[i][1]
-                print(deg_y)
                 self.path_1.add_position(deg_x,deg_y) 
-                
-
-    
-
+            self.ask_for_recommendation()
+            
+    def ask_for_recommendation(self):
+        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point) + " with your response in only 3 bullet points containing the modes of transport"
+        answer = bard_GetAnswer(prompt)
+        print(answer['content']) in self.textframe
+        
  
     #clears the placed marker(s) and path 
     def clear_marker_event(self):

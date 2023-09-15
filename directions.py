@@ -11,8 +11,6 @@ def extract_coordinates_from_response(start_and_end_point):
         geometry = routes['routes'][0]['geometry']
         # Decode the polyline to get the list of coordinates
         coordinates = polyline.decode(geometry)
-
-        print(coordinates)
         return coordinates
     except (KeyError, IndexError):
         return []
