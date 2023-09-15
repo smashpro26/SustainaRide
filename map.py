@@ -5,26 +5,9 @@ from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
 import polyline
+import directions
 
 customtkinter.set_default_color_theme("blue")
-
-coords = [(-1.540704504417448,53.806167806881845),(-1.5358874132664084,53.80426084639122)]
-
-client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a') # Specify your personal API key
-routes = directions(client, coords) # Now it shows you all arguments for .directions
-
-def extract_coordinates_from_response(response):
-    try:
-        geometry = response['routes'][0]['geometry']
-        # Decode the polyline to get the list of coordinates
-        coordinates = polyline.decode(geometry)
-
-        return coordinates
-    except (KeyError, IndexError):
-        return []
-coordinates_only = extract_coordinates_from_response(routes)
-print(coordinates_only)
-
 
 #Creating the app class
 class App(customtkinter.CTk):
@@ -33,12 +16,12 @@ class App(customtkinter.CTk):
     APP_NAME = "Uber_Transport_SS"
     WIDTH = 800
     HEIGHT = 500
-    
-    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
        
+        self.get_coords_for_route()
+
         #Configuring the window
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -141,11 +124,19 @@ class App(customtkinter.CTk):
             path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
             print(self.marker_list[0].position)
             print(self.marker_list[1].position)
+            
  
     #clears the placed marker
     def clear_marker_event(self):
         for marker in self.marker_list:
             marker.delete()
+    
+    
+    def get_coords_for_route(self):
+        start_and_end_point = [(-1.540704504417448,53.806167806881845),(-1.5358874132664084,53.80426084639122)]
+        coords = directions.extract_coordinates_from_response(start_and_end_point)
+        print(coords)
+
 
     #ability to change from dark or light mode
     def change_appearance_mode(self, new_appearance_mode: str):

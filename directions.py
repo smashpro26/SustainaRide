@@ -1,16 +1,19 @@
-from openrouteservice import deprecation
-from openrouteservice.optimization import optimization, Job, Vehicle
+import polyline
 import openrouteservice
+from openrouteservice.directions import directions
 
-import warnings
+client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a') 
 
-client = openrouteservice.Client(key='5b3ce3597851110001cf6248b61898f56c394160be8a77936e312a7a')
 
-start_coords = (-1.540704504417448,53.806167806881845)
-end_coords = (-1.5358874132664084,53.80426084639122)
+def extract_coordinates_from_response(start_and_end_point):
+    routes = directions(client, start_and_end_point)
+    try:
+        geometry = routes['routes'][0]['geometry']
+        # Decode the polyline to get the list of coordinates
+        coordinates = polyline.decode(geometry)
 
-directions = client.directions(coordinates=[start_coords, end_coords], profile='driving-car',format="json")
-
-if 'features' in directions and len(directions['features']) > 0:
-    for coordinates in directions['features'][0]['geometry']['coordinates']:
         print(coordinates)
+        return coordinates
+    except (KeyError, IndexError):
+        return []
+
