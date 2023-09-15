@@ -120,8 +120,7 @@ class App(customtkinter.CTk):
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
         if len(self.marker_list) == 2:
             path_1 = self.map_widget.set_path([self.marker_list[0].position, self.marker_list[1].position])
-            print(self.marker_list[0].position)
-            print(self.marker_list[1].position)
+            
             
  
     #clears the placed marker
@@ -131,7 +130,7 @@ class App(customtkinter.CTk):
     
     
     def get_coords_for_route(self):
-        start_and_end_point = [(-1.540704504417448,53.806167806881845),(-1.5358874132664084,53.80426084639122)]
+        start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
         coords = directions.extract_coordinates_from_response(start_and_end_point)
         print(coords)
 
