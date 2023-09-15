@@ -1,10 +1,8 @@
 #importing packages
 
-import openrouteservice
 from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
-import polyline
 import directions
 
 customtkinter.set_default_color_theme("blue")
