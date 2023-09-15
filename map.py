@@ -12,8 +12,8 @@ class App(customtkinter.CTk):
     
     #Configuring the app
     APP_NAME = "Uber_Transport_SS"
-    WIDTH = 800
-    HEIGHT = 500
+    WIDTH = 1400
+    HEIGHT = 800
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,9 +39,10 @@ class App(customtkinter.CTk):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(2,weight = 0)
         #left column does not resize when window is resized, howecer right column and row is resized to be more proportionate
 
-        #========= left frame =========
+
 
         self.frame_left = customtkinter.CTkFrame(master=self, width=150, corner_radius=0, fg_color=None)
         self.frame_left.grid(row=0, column=0, padx=0, pady=0, sticky="nsew")
@@ -57,7 +58,7 @@ class App(customtkinter.CTk):
 
         
 
-
+        #========= left frame =========
         
         #Creating a button for adding a marker on the map
         self.button_1 = customtkinter.CTkButton(master=self.frame_left,
@@ -71,12 +72,9 @@ class App(customtkinter.CTk):
                                                 command=self.clear_marker_event)
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
 
-        
-        self.textframe = customtkinter.CTkScrollableFrame(master=self.frame_left, label_text="RoutePlan")
-        self.textframe.grid(pady=(20, 0), padx=(20,20), row=2, column=0)
-        
-
-
+        self.userinput_entry = customtkinter.CTkEntry(master= self.frame_left, placeholder_text="Ask for extra details...")
+        self.userinput_entry.grid(row=2, column=0, padx=(20, 20), pady=(10, 0))
+        self.userinput_entry.bind("<Return>", self.user_input)
 
         #A label and option menu for changing tile servers (Google maps and google satellite)
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
@@ -119,6 +117,16 @@ class App(customtkinter.CTk):
         self.map_widget.set_address("Leeds")
         self.appearance_mode_optionemenu.set("Dark")
 
+        #==================== Frame right column ==============================
+
+        self.textframe = customtkinter.CTkScrollableFrame(master=self, label_text="RoutePlan",width=250)
+        self.textframe.grid(pady=(20, 0), padx=(20, 20), row=0, column=2, columnspan=2, sticky="nsew")
+
+        self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='w',text= " ",wraplength=240)
+        self.info_label.grid(row=0, column=0, sticky="w")
+        print(self.textframe.winfo_screenmmwidth())
+
+
     #Gets the text from the entry and sets the map position to the place the user searched up
     def search_event(self, event=None):
         self.map_widget.set_address(self.entry.get())
@@ -144,7 +152,13 @@ class App(customtkinter.CTk):
     def ask_for_recommendation(self):
         prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point) + " with your response in only 3 bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation"
         answer = bard_GetAnswer(prompt)
-        print(self.textframe(answer['content'])) 
+        self.info_label.configure(text=answer['content'], anchor='w')
+    
+    
+    def user_input(self,event=None):
+        prompt = self.userinput_entry.get()
+        answer = bard_GetAnswer(prompt)
+        self.info_label.configure(text=answer['content'], anchor='w')
         
  
     #clears the placed marker(s) and path 
