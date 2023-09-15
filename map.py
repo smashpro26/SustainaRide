@@ -118,7 +118,7 @@ class App(customtkinter.CTk):
         current_position = self.map_widget.get_position()
 
         self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
-        if len(self.marker_list) == 2:
+        if len(self.marker_list) >= 2:
             
             start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
             coords = directions.extract_coordinates_from_response(start_and_end_point)
@@ -139,7 +139,8 @@ class App(customtkinter.CTk):
     def clear_marker_event(self):
         for marker in self.marker_list:
             marker.delete()
-        self.path_1.delete()
+            self.path_1.delete()
+        self.marker_list.clear()
 
     #ability to change from dark or light mode
     def change_appearance_mode(self, new_appearance_mode: str):
