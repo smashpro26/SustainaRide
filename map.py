@@ -142,7 +142,7 @@ class App(customtkinter.CTk):
             self.ask_for_recommendation()
             
     def ask_for_recommendation(self):
-        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point) + " with your response in only 3 bullet points containing the modes of transport"
+        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point) + " with your response in only 3 bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation"
         answer = bard_GetAnswer(prompt)
         print(answer['content']) in self.textframe
         
