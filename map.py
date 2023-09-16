@@ -119,7 +119,7 @@ class App(customtkinter.CTk):
 
         #==================== Frame right column ==============================
 
-        self.textframe = customtkinter.CTkScrollableFrame(master=self, label_text="RoutePlan",width=250)
+        self.textframe = customtkinter.CTkScrollableFrame(master=self, label_text="Your Trip Planner",width=250)
         self.textframe.grid(pady=(20, 0), padx=(20, 20), row=0, column=2, columnspan=2, sticky="nsew")
 
         self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='w',text= " ",wraplength=240)
@@ -135,22 +135,22 @@ class App(customtkinter.CTk):
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
 
-        self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1]))
+        self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="Start"))
         if len(self.marker_list) >= 2:
             
             self.start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
-            coords = directions.extract_coordinates_from_response(self.start_and_end_point)
-            self.path_1 = self.map_widget.set_path([self.marker_list[0].position, coords[1] ])
+            self.coords, self.distance = directions.extract_coordinates_from_response(self.start_and_end_point)
+            self.path_1 = self.map_widget.set_path([self.marker_list[0].position, self.coords[0] ])
             #print(coords)
             self.start_and_end_point = [(self.marker_list[0].position),(self.marker_list[1].position)]
-            for i in range(len(coords)):
-                deg_x =coords[i][0]
-                deg_y =coords[i][1]
+            for i in range(len(self.coords)):
+                deg_x =self.coords[i][0]
+                deg_y =self.coords[i][1]
                 self.path_1.add_position(deg_x,deg_y) 
             self.ask_for_recommendation()
             
     def ask_for_recommendation(self):
-        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point) + " with your response in only 3 bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation"
+        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point[0])+ " to "+ str(self.start_and_end_point[1]) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in only 3 bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation"
         answer = bard_GetAnswer(prompt)
         self.info_label.configure(text=answer['content'], anchor='w')
     
