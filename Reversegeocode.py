@@ -1,7 +1,7 @@
 from geopy.geocoders import Nominatim
 
 # Initialize the geocoder (Nominatim in this example)
-geolocator = Nominatim(user_agent="reverse_geocoding_app")
+geolocator = Nominatim(user_agent="my_geocoder")
 
 # Define the coordinates (latitude and longitude)
 
