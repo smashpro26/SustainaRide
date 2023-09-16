@@ -2,16 +2,10 @@ import customtkinter
 import requests
 import json
 
-
 class PickOthers(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
-
-        #self.label = customtkinter.CTkLabel(self, text="PickUpOthersWindow")
-        #self.label.pack(padx=20, pady=20)
-
-      
 
         self.enter_name= customtkinter.CTkEntry(master=self,placeholder_text="Enter your name: ")
         self.enter_name.grid(row=0, column=0, sticky='nsew')
@@ -29,16 +23,22 @@ class PickOthers(customtkinter.CTkToplevel):
         self.grid_rowconfigure(1, weight=1)  # enter_name row
         self.grid_rowconfigure(2, weight=1)  # enter_age row
         self.grid_rowconfigure(3, weight=1)  # enter_numplate row
+        
     
+        
     def wait_to_find_passenger(self):
         self.name = self.enter_name.get()
         self.age = self.enter_age.get()
         self.numplate = self.enter_numplate.get()
         
+        
         if self.name != "" and self.age != "" and self.numplate != "" and int(self.age) >= 17:
             #Create a pop up for waiting
             print("waiting to find passenger") 
-            data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate}       
+            self.data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate}  
+            response = requests.post("http://127.0.0.1:1111//receive_data",json = self.data_to_send)
+            print(response.status_code)
+           
 
 def PickUpOthers():
     toplevel_window = None
@@ -46,9 +46,8 @@ def PickUpOthers():
         toplevel_window = PickOthers()
     else:
         toplevel_window.focus()  # if window exists focus it
-
-
-
+    
+    
 
 class GetPicked(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):

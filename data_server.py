@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-
+import requests
+import http
 app = Flask(__name__)
 
 # Endpoint to receive data from Client 1
@@ -16,3 +17,9 @@ def retrieve_data():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1111)  # Run the Flask server on port 
+    
+
+
+
+
+

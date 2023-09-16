@@ -7,7 +7,7 @@ import directions
 from bard_ai import bard_GetAnswer
 from Reversegeocode import reverse_geocode
 import requests
-from popup import PickUpOthers,GetPickedUp
+from popup import PickUpOthers, GetPickedUp
 
 
 customtkinter.set_default_color_theme("blue")
@@ -221,11 +221,14 @@ class App(customtkinter.CTk):
 
     #creates a popup window for picking others up
     def pick_others_up(self):
-        PickUpOthers(self.marker_list[0].position,self.marker_list[1])
+        PickUpOthers()
+
+
     
     #creates a popup window for getting picked up
     def get_picked_up(self):
         GetPickedUp(self.marker_list[0].position,self.marker_list[1])
+        
 
     #ability to change from dark or light mode
     def change_appearance_mode(self, new_appearance_mode: str):
