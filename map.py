@@ -7,6 +7,8 @@ import directions
 from bard_ai import bard_GetAnswer
 from Reversegeocode import reverse_geocode
 import requests
+from popup import PickUpOthers,GetPickedUp
+
 
 customtkinter.set_default_color_theme("blue")
 #Creating the app class
@@ -75,6 +77,17 @@ class App(customtkinter.CTk):
                                                 command=self.clear_marker_event)
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
 
+        #Creating a button for people trying to find someone to carpool with to be driven somewhere
+        self.pick_others = customtkinter.CTkButton(master=self.frame_left, 
+                                                text="Pick others up",
+                                                command=PickUpOthers)
+        self.pick_others.grid(pady=(20, 0), padx=(20, 20), row=2, column=0)
+
+        self.get_picked = customtkinter.CTkButton(master=self.frame_left, text="Get picked up", command=GetPickedUp)
+        self.get_picked.grid(pady=(20, 0), padx=(20, 20), row=3, column=0)
+        
+
+
         #A label and option menu for changing tile servers (Google maps and google satellite)
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
         self.map_label.grid(row=4, column=0, padx=(20, 20), pady=(20, 0))
@@ -84,9 +97,9 @@ class App(customtkinter.CTk):
 
         #A label and option menu for changing between light, dark or system theme
         self.appearance_mode_label = customtkinter.CTkLabel(self.frame_left, text="Appearance Mode:", anchor="w")
-        self.appearance_mode_label.grid(row=5, column=0, padx=(20, 20), pady=(20, 0))
+        self.appearance_mode_label.grid(row=6, column=0, padx=(20, 20), pady=(20, 0))
         self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.frame_left, values=["Light", "Dark", "System"],command=self.change_appearance_mode)
-        self.appearance_mode_optionemenu.grid(row=6, column=0, padx=(20, 20), pady=(10, 20))
+        self.appearance_mode_optionemenu.grid(row=7, column=0, padx=(20, 20), pady=(10, 20))
 
         # ============ frame_right ============
 
