@@ -19,6 +19,7 @@ class App(customtkinter.CTk):
         super().__init__(*args, **kwargs)
 
         self.path_1 = None
+        self.num_of_markers =1
         #Configuring the window
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -72,10 +73,6 @@ class App(customtkinter.CTk):
                                                 command=self.clear_marker_event)
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
 
-        self.userinput_entry = customtkinter.CTkEntry(master= self.frame_left, placeholder_text="Ask for extra details...")
-        self.userinput_entry.grid(row=2, column=0, padx=(20, 20), pady=(10, 0))
-        self.userinput_entry.bind("<Return>", self.user_input)
-
         #A label and option menu for changing tile servers (Google maps and google satellite)
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
         self.map_label.grid(row=3, column=0, padx=(20, 20), pady=(20, 0))
@@ -105,7 +102,7 @@ class App(customtkinter.CTk):
 
         #Creating an entry feild so that users can type in where they want to search up. The search_event function gets the text from this entry
         self.entry = customtkinter.CTkEntry(master=self.frame_right,placeholder_text="type address")
-        self.entry.grid(row=0, column=0, sticky="we", padx=(12, 0), pady=12)
+        self.entry.grid(row=0, column=0, sticky="ew", padx=(12, 0), pady=12)
         self.entry.bind("<Return>", self.search_event)
         #search_event function is called when Enter key is pressed 
 
@@ -118,13 +115,30 @@ class App(customtkinter.CTk):
         self.appearance_mode_optionemenu.set("Dark")
 
         #==================== Frame right column ==============================
+        
+        self.right_column = customtkinter.CTkFrame(master=self)
+        self.right_column.grid(row=0, column=2, sticky="nsew")  # Use sticky option
+        self.grid_rowconfigure(0, weight=1)  # Configure the row to expand vertically
+        self.right_column.grid_columnconfigure(0, weight=1)
+        #self.right_column.grid_columnconfigure()
+        self.right_column.grid_rowconfigure(2, weight=1)        
+        
+        self.userinput_entry = customtkinter.CTkEntry(master= self.right_column, placeholder_text="Ask for extra details...")
+        self.userinput_entry.grid(row=0, column=2, sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=2)
+        self.userinput_entry.bind("<Return>", self.user_input)
 
-        self.textframe = customtkinter.CTkScrollableFrame(master=self, label_text="Your Trip Planner",width=250)
-        self.textframe.grid(pady=(20, 0), padx=(20, 20), row=0, column=2, columnspan=2, sticky="nsew")
+        self.enter_button = customtkinter.CTkButton(master=self.right_column, text="Enter", command=self.user_input)
+        self.enter_button.grid(row=1, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=2)
 
-        self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='w',text= " ",wraplength=240)
+
+        self.textframe = customtkinter.CTkScrollableFrame(master=self.right_column, label_text="Your Trip Planner",width=250)
+        self.textframe.grid(pady=(20, 0), padx=(20, 20), row=2, column=2, columnspan=2, sticky="nsew")
+
+        
+
+        self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='e',text= " ",wraplength=240)
         self.info_label.grid(row=0, column=0, sticky="w")
-        print(self.textframe.winfo_screenmmwidth())
+    
 
 
     #Gets the text from the entry and sets the map position to the place the user searched up
@@ -134,8 +148,13 @@ class App(customtkinter.CTk):
     #set a marker at a specific position
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
-
-        self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="Start"))
+        
+        if self.num_of_markers == 1:
+            self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="Start"))
+        elif self.num_of_markers == 2:
+            self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="End"))
+        self.num_of_markers+=1
+        
         if len(self.marker_list) >= 2:
             
             self.start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
@@ -159,6 +178,7 @@ class App(customtkinter.CTk):
         prompt = self.userinput_entry.get()
         answer = bard_GetAnswer(prompt)
         self.info_label.configure(text=answer['content'], anchor='w')
+        print(answer['content']) in self.textframe
         
  
     #clears the placed marker(s) and path 
