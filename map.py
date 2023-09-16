@@ -5,7 +5,9 @@ import customtkinter
 from tkintermapview import TkinterMapView
 import directions
 from bard_ai import bard_GetAnswer
+from Reversegeocode import reverse_geocode
 customtkinter.set_default_color_theme("blue")
+
 
 #Creating the app class
 class App(customtkinter.CTk):
@@ -19,7 +21,7 @@ class App(customtkinter.CTk):
         super().__init__(*args, **kwargs)
 
         self.path_1 = None
-        self.num_of_markers =1
+        self.num_of_markers =0
         #Configuring the window
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -144,16 +146,27 @@ class App(customtkinter.CTk):
     #Gets the text from the entry and sets the map position to the place the user searched up
     def search_event(self, event=None):
         self.map_widget.set_address(self.entry.get())
+        self.map_widget.adre
+        self.map_widget.set_address()
 
+
+
+    
     #set a marker at a specific position
     def set_marker_event(self):
         current_position = self.map_widget.get_position()
         
+        self.num_of_markers+=1
         if self.num_of_markers == 1:
             self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="Start"))
+            #self.latitude = current_position[0]
+            #self.longitude = current_position[1]
+            self.start_address = reverse_geocode(latitude=current_position[0], longitude= current_position[1])
         elif self.num_of_markers == 2:
             self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="End"))
-        self.num_of_markers+=1
+            self.latitude = current_position[0]
+            self.longitude = current_position[1]
+            self.end_address = reverse_geocode(latitude=current_position[0], longitude= current_position[1])
         
         if len(self.marker_list) >= 2:
             
@@ -167,11 +180,16 @@ class App(customtkinter.CTk):
                 deg_y =self.coords[i][1]
                 self.path_1.add_position(deg_x,deg_y) 
             self.ask_for_recommendation()
+
+
             
     def ask_for_recommendation(self):
-        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_and_end_point[0])+ " to "+ str(self.start_and_end_point[1]) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in only 3 bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation"
+        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_address)+ " to "+ str(self.end_address) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
         answer = bard_GetAnswer(prompt)
         self.info_label.configure(text=answer['content'], anchor='w')
+        print(str(self.start_address))
+        print(str(self.end_address))
+
     
     
     def user_input(self,event=None):
@@ -187,6 +205,7 @@ class App(customtkinter.CTk):
             marker.delete()
             self.path_1.delete()
         self.marker_list.clear()
+        self.num_of_markers = 0
 
     #ability to change from dark or light mode
     def change_appearance_mode(self, new_appearance_mode: str):
