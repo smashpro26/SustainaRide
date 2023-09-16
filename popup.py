@@ -36,7 +36,7 @@ class PickOthers(customtkinter.CTkToplevel):
             #Create a pop up for waiting
             print("waiting to find passenger") 
             self.data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate}  
-            response = requests.post('tcp://6.tcp.eu.ngrok.io:14934/receive_data',json = self.data_to_send)
+            response = requests.post('http://10.0.0.231:1111/receive_data',json = self.data_to_send)
             print(response.status_code)
            
 
