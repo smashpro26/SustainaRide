@@ -6,7 +6,7 @@ ssl.create_default_context(cafile=certifi.where())
 
 
 # Initialize the geocoder (Nominatim in this example)
-geolocator = Nominatim(user_agent="my_geocoder")
+geolocator = Nominatim(user_agent="my_geocoder", scheme="http")
 
 # Define the coordinates (latitude and longitude)
 
