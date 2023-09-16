@@ -78,12 +78,11 @@ class App(customtkinter.CTk):
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
 
         #Creating a button for people trying to find someone to carpool with to be driven somewhere
-        self.pick_others = customtkinter.CTkButton(master=self.frame_left, 
-                                                text="Pick others up",
-                                                command=PickUpOthers)
+        self.pick_others = customtkinter.CTkButton(master=self.frame_left, text="Pick others up", state="disabled",command=self.pick_others_up)
         self.pick_others.grid(pady=(20, 0), padx=(20, 20), row=2, column=0)
 
-        self.get_picked = customtkinter.CTkButton(master=self.frame_left, text="Get picked up", command=GetPickedUp)
+
+        self.get_picked = customtkinter.CTkButton(master=self.frame_left, text="Get picked up", state = "disabled", command=self.get_picked_up)
         self.get_picked.grid(pady=(20, 0), padx=(20, 20), row=3, column=0)
         
 
@@ -153,7 +152,6 @@ class App(customtkinter.CTk):
 
         self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='e',text= " ",wraplength=240)
         self.info_label.grid(row=0, column=0, sticky="w")
-    
 
 
     #Gets the text from the entry and sets the map position to the place the user searched up
@@ -190,6 +188,8 @@ class App(customtkinter.CTk):
                 deg_y =self.coords[i][1]
                 self.path_1.add_position(deg_x,deg_y) 
             self.ask_for_recommendation()
+            self.pick_others.configure(state = "normal")
+            self.get_picked.configure(state= "normal")
 
 
             
@@ -216,6 +216,16 @@ class App(customtkinter.CTk):
             self.path_1.delete()
         self.marker_list.clear()
         self.num_of_markers = 0
+        self.pick_others.configure(state = "disabled")
+        self.get_picked.configure(state= "disabled")
+
+    #creates a popup window for picking others up
+    def pick_others_up(self):
+        PickUpOthers(self.marker_list[0].position,self.marker_list[1])
+    
+    #creates a popup window for getting picked up
+    def get_picked_up(self):
+        GetPickedUp(self.marker_list[0].position,self.marker_list[1])
 
     #ability to change from dark or light mode
     def change_appearance_mode(self, new_appearance_mode: str):
