@@ -2,6 +2,12 @@ import customtkinter
 import requests
 import json
 
+
+
+
+
+
+
 class PickOthers(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,13 +38,20 @@ class PickOthers(customtkinter.CTkToplevel):
         self.numplate = self.enter_numplate.get()
         
         
-        if self.name != "" and self.age != "" and self.numplate != "" and int(self.age) >= 17:
+        if self.name != "" and self.numplate != "" and int(self.age) >= 17:
+            self.data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate} 
+            try:
+                response = requests.post('http://surveyer.pythonanywhere.com/receive_data', json=self.data_to_send)
+                response.raise_for_status()  # Raise an exception for HTTP errors
+                print(response.status_code)
+            except requests.exceptions.RequestException as e:
+                 print(f"Request error: {e}")
             #Create a pop up for waiting
-            print("waiting to find passenger") 
-            self.data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate}  
-            response = requests.post('http://127.0.0.1:1111/receive_data',json = self.data_to_send)
+            print("waiting to find passenger")  
+            response = requests.post('http://surveyer.pythonanywhere.com/receive_data',json = self.data_to_send)
             print(response.status_code)
-           
+            
+
 
 def PickUpOthers():
     toplevel_window = None
