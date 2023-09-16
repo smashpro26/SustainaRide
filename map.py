@@ -6,12 +6,12 @@ from tkintermapview import TkinterMapView
 import directions
 from bard_ai import bard_GetAnswer
 from Reversegeocode import reverse_geocode
+import requests
+
 customtkinter.set_default_color_theme("blue")
-
-
 #Creating the app class
 class App(customtkinter.CTk):
-    
+
     #Configuring the app
     APP_NAME = "Uber_Transport_SS"
     WIDTH = 1400
@@ -77,10 +77,10 @@ class App(customtkinter.CTk):
 
         #A label and option menu for changing tile servers (Google maps and google satellite)
         self.map_label = customtkinter.CTkLabel(self.frame_left, text="Tile Server:", anchor="w")
-        self.map_label.grid(row=3, column=0, padx=(20, 20), pady=(20, 0))
+        self.map_label.grid(row=4, column=0, padx=(20, 20), pady=(20, 0))
         self.map_option_menu = customtkinter.CTkOptionMenu(self.frame_left, values=[ "Google normal", "Google satellite"],
                                                                        command=self.change_map)
-        self.map_option_menu.grid(row=4, column=0, padx=(20, 20), pady=(10, 0))
+        self.map_option_menu.grid(row=5, column=0, padx=(20, 20), pady=(10, 0))
 
         #A label and option menu for changing between light, dark or system theme
         self.appearance_mode_label = customtkinter.CTkLabel(self.frame_left, text="Appearance Mode:", anchor="w")
@@ -148,9 +148,6 @@ class App(customtkinter.CTk):
         self.map_widget.set_address(self.entry.get())
         self.map_widget.adre
         self.map_widget.set_address()
-
-
-
     
     #set a marker at a specific position
     def set_marker_event(self):
