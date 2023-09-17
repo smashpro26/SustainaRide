@@ -10,8 +10,12 @@ class DriverPopup(customtkinter.CTkToplevel):
 
         self.passenger_list = customtkinter.CTkLabel(master = self, text="No one at the momenent")
         self.passenger_list.grid(row=0, column=0, sticky='nsew')
-
         
+        self.passengers = requests.get(f"http://surveyer.pythonanywhere.com/get_passengers")  
+        if self.passengers.status_code == 200:
+            client_info = self.passengers.json()
+            print(client_info)
+        self.passenger_list.configure(text=self.passengers.content)
         
     def FindPassenger(self):
         self.passengers = requests.get(f"http://surveyer.pythonanywhere.com/get_passengers")  
