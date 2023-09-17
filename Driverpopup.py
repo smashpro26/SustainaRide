@@ -12,10 +12,6 @@ class DriverPopup(customtkinter.CTkToplevel):
         self.passengerlist_scrollable = customtkinter.CTkScrollableFrame(master=self, label_text='Passenger_list')
         self.passengerlist_scrollable.grid(row=0, column=0, sticky='nsew')
         self.columnconfigure(0, weight=1)
-
-
-        self.passenger_list = customtkinter.CTkLabel(master = self, text="No one at the momenent",wraplength=380)
-        self.passenger_list.grid(row=0, column=0, sticky='nsew')
         
         self.FindPassenger()
         
@@ -30,8 +26,8 @@ class DriverPopup(customtkinter.CTkToplevel):
                 self.name = passenger.get('name')
                 self.age = str(passenger.get('age'))
                 print(self.name + " " + self.age )
-                driver = customtkinter.CTkLabel(master=self.passengerlist_scrollable,text="Name: " + self.name + " Age: " + self.age)
-                driver.grid(row = self.counter, column = 0,pady=(20, 0), padx=(20, 20), sticky='nsew')
+                passenger = customtkinter.CTkLabel(master=self.passengerlist_scrollable,text="Name: " + self.name + " Age: " + self.age)
+                passenger.grid(row = self.counter, column = 0,pady=(20, 0), padx=(20, 20), sticky='nsew')
                 self.counter += 1
         else:
             print(f"Failed to get passenger information. Status code: {self.passengers.status_code}")
@@ -41,7 +37,7 @@ class DriverPopup(customtkinter.CTkToplevel):
         #self.all_passengers = [self.all_passengers.append(passenger['name']) for passenger in self.passenger_list]
         #self.passenger_list.configure(text="\n".join(self.all_passengers))
         print(self.passengers)
-        self.passenger_list.configure(text=self.passengers.content)
+
 
 def DriverPanel():
     toplevel_window = None
