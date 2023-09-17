@@ -1,41 +1,33 @@
-from flask import Flask, request, jsonify
 import requests
-import http
+import json
+from flask import Flask, request, jsonify
+
 app = Flask(__name__)
 drivers = []
-#passengers = []
+passengers = []
 
-
-
-@app.route('/receivedata', methods=['POST'])
+@app.route('/post_driver_data', methods=['POST'])
 def Register_Driver():
-    data = request.json 
+    data = request.json
     drivers.append(data)
-    return jsonify({"message": "Driver registered successfully"})
+    return jsonify(drivers)
 
+@app.route('/post_passenger_data', methods=['POST'])
+def Register_Passenger():
+    data = request.json
+    passengers.append(data)
+    return jsonify(drivers)
 
-@app.route('/retrievedata<driver_name>', methods=['GET'])
-def Get_Driver(driver_name):
-    for driver in drivers:
-        if driver['name'] == driver_name:
-            return jsonify(driver)
-    return jsonify({"message" : "Driver not found"})
+@app.route('/get_drivers', methods=['GET'])
+def Get_Drivers():
+    return jsonify(drivers)
 
-
-# Endpoint to receive data  
-@app.route('/receive_data', methods=['POST'])
-def receive_data():
-    data = request.json  # Get JSON data sent by Client 1
-    # Process data or store it as needed
-    return jsonify({"message": "Data received successfully"})
-
-@app.route('/retrieve_data', methods=['GET'])
-def retrieve_data():
-    data = {"key": "This is some example text"} 
-    return jsonify(data)  # Return the data as JSON
+@app.route('/get_passengers', methods=['GET'])
+def Get_Passengers():
+    return jsonify(passengers)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=1111, debug=True)  # Run the Flask server on port 
+    app.run(host='0.0.0.0', port=1111, debug=True)
     
 
 

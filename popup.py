@@ -1,13 +1,7 @@
 import customtkinter 
 import requests
 import json
-
-
-
-
-
-
-
+from Driverpopup import  DriverPanel
 class PickOthers(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,16 +35,13 @@ class PickOthers(customtkinter.CTkToplevel):
         if self.name != "" and self.numplate != "" and int(self.age) >= 17:
             self.data_to_send = {"name": self.name, "age": self.age, "numplate": self.numplate} 
             try:
-                response = requests.post('http://surveyer.pythonanywhere.com/receive_data', json=self.data_to_send)
+                response = requests.post('http://surveyer.pythonanywhere.com/post_driver_data', json=self.data_to_send)
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
-                print(response_data.get('name'),response_data.get('age'),response_data.get('numplate'))
+                DriverPanel()
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
-
-            
-
 
 def PickUpOthers():
     toplevel_window = None
@@ -86,12 +77,12 @@ class GetPicked(customtkinter.CTkToplevel):
         if self.name != "" and self.age != "" and int(self.age) >= 13:
             self.data_to_send = {"name" : self.name, "age" : self.age}
             print("waiting to find driver")
+
             try:
-                response = requests.post('http://surveyer.pythonanywhere.com/receive_data', json=self.data_to_send)
+                response = requests.post('http://surveyer.pythonanywhere.com/post_passenger_data', json=self.data_to_send)
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
-                print(response_data.get("name"),response_data.get("age"))
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
         
