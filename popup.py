@@ -43,13 +43,12 @@ class PickOthers(customtkinter.CTkToplevel):
             try:
                 response = requests.post('http://surveyer.pythonanywhere.com/receive_data', json=self.data_to_send)
                 response.raise_for_status()  # Raise an exception for HTTP errors
-                print(response.content)
+                response_data = response.json()
+                print(response.status_code)
+                print(response_data.get('name'),response_data.get('age'),response_data.get('numplate'))
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
-            #Create a pop up for waiting
-            print("waiting to find passenger")  
-            response = requests.post('http://surveyer.pythonanywhere.com/receive_data',json = self.data_to_send)
-            print(response.status_code)
+
             
 
 

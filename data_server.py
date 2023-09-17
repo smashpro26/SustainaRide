@@ -3,7 +3,7 @@ import requests
 import http
 app = Flask(__name__)
 
-# Endpoint to receive data from Client 1
+# Endpoint to receive data  
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     data = request.json  # Get JSON data sent by Client 1
@@ -12,7 +12,7 @@ def receive_data():
 
 @app.route('/retrieve_data', methods=['GET'])
 def retrieve_data():
-    data = {"key": "This is some example text"}  
+    data = {"key": "This is some example text"} 
     return jsonify(data)  # Return the data as JSON
 
 if __name__ == '__main__':
