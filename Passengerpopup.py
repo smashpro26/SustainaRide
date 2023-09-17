@@ -6,9 +6,9 @@ class PassengerPopup(customtkinter.CTkToplevel):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")    
         self.driver_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindDriver)
-        self.driver_refreshbtn.grid(row=1, column=0, sticky='nsew', wraptext=100)     
+        self.driver_refreshbtn.grid(row=1, column=0, sticky='nsew')     
 
-        self.driver_list = customtkinter.CTkLabel(master = self, text="No one at the momenent")
+        self.driver_list = customtkinter.CTkLabel(master = self, text="No one at the momenent",wraplength=380)
         self.driver_list.grid(row=0, column=0, sticky='nsew')
         
         self.drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_drivers")  

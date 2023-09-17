@@ -8,8 +8,8 @@ class DriverPopup(customtkinter.CTkToplevel):
         self.passenger_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindPassenger)
         self.passenger_refreshbtn.grid(row=1, column=0, sticky='nsew')     
 
-        self.passenger_list = customtkinter.CTkLabel(master = self, text="No one at the momenent")
-        self.passenger_list.grid(row=0, column=0, sticky='nsew', wraptext=100)
+        self.passenger_list = customtkinter.CTkLabel(master = self, text="No one at the momenent",wraplength=380)
+        self.passenger_list.grid(row=0, column=0, sticky='nsew')
         
         self.passengers = requests.get(f"http://surveyer.pythonanywhere.com/get_passengers")  
         if self.passengers.status_code == 200:
