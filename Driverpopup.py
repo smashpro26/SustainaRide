@@ -8,6 +8,12 @@ class DriverPopup(customtkinter.CTkToplevel):
         self.passenger_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindPassenger)
         self.passenger_refreshbtn.grid(row=1, column=0, sticky='nsew')     
 
+
+        self.passengerlist_scrollable = customtkinter.CTkScrollableFrame(master=self, label_text='Passenger_list')
+        self.passengerlist_scrollable.grid(row=0, column=0, sticky='nsew')
+        self.columnconfigure(0, weight=1)
+
+
         self.passenger_list = customtkinter.CTkLabel(master = self, text="No one at the momenent",wraplength=380)
         self.passenger_list.grid(row=0, column=0, sticky='nsew')
         
