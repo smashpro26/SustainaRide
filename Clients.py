@@ -2,7 +2,7 @@ import requests
 import json
 
 
-driver_data = {"name": "Client1", "age": 25, "numplate": "XYZ123"}
+driver_data = {"name": "driver 2", "age": 25, "numplate": "XYZ123"}
 response = requests.post("http://surveyer.pythonanywhere.com/post_driver_data", json=driver_data)
 if response.status_code == 200:
     print("Client (driver) registered successfully")

@@ -41,7 +41,7 @@ class PickOthers(customtkinter.CTkToplevel):
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
-                DriverPanel()
+                DriverPanel(self.name)
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
 
@@ -85,7 +85,7 @@ class GetPicked(customtkinter.CTkToplevel):
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
-                PassengerPanel()
+                PassengerPanel(self.data_to_send)
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
         

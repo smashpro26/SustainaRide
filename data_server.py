@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 drivers = []
 passengers = []
+accepted_drivers = []
 
 @app.route('/post_driver_data', methods=['POST'])
 def Register_Driver():
