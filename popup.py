@@ -2,6 +2,8 @@ import customtkinter
 import requests
 import json
 from Driverpopup import  DriverPanel
+from Passengerpopup import PassengerPanel
+
 class PickOthers(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -83,6 +85,7 @@ class GetPicked(customtkinter.CTkToplevel):
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
+                PassengerPanel()
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
         
