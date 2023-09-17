@@ -80,13 +80,20 @@ class GetPicked(customtkinter.CTkToplevel):
         self.grid_rowconfigure(2, weight=1)
 
     def wait_to_find_driver(self):
-        name = self.enter_name.get()
-        age = self.enter_age.get()
+        self.name = self.enter_name.get()
+        self.age = self.enter_age.get()
         
-        if name != "" and age != "" and int(age) >= 13:
-            #Create a pop up for waiting
+        if self.name != "" and self.age != "" and int(self.age) >= 13:
+            self.data_to_send = {"name" : self.name, "age" : self.age}
             print("waiting to find driver")
-
+            try:
+                response = requests.post('http://surveyer.pythonanywhere.com/receive_data', json=self.data_to_send)
+                response.raise_for_status()  # Raise an exception for HTTP errors
+                response_data = response.json()
+                print(response.status_code)
+                print(response_data.get("name"),response_data.get("age"))
+            except requests.exceptions.RequestException as e:
+                 print(f"Request error: {e}")
         
 
 
