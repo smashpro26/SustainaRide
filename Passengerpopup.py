@@ -35,10 +35,9 @@ class PassengerPopup(customtkinter.CTkToplevel):
         
 
     def FindDriver(self):
+        self.drivers = {}
         self.drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_drivers")  
         if self.drivers.status_code == 200:
-            self.drivers = {}
-            self.client_info = self.drivers.json()
             print(self.client_info)
             for driver in self.client_info:
                 self.name = driver.get('name')
