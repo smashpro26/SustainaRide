@@ -18,7 +18,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
 
         #self.driver_list_label = customtkinter.CTkLabel(master = self.driverlist_scrollable, text="No one at the momenent",wraplength=380)
         #self.driver_list_label.grid(row=0, column=0, sticky='nsew')
-        
+        '''
         self.drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_drivers")  
         if self.drivers.status_code == 200:
             self.client_info = self.drivers.json()
@@ -31,13 +31,15 @@ class PassengerPopup(customtkinter.CTkToplevel):
                 print(self.name + " " + self.age + " " + self.num_plate)
                 driver = customtkinter.CTkLabel(master=self.driverlist_scrollable,text="Name: " + self.name + " Age: " + self.age + " Numberplate: " + self.num_plate)
                 driver.grid(row = self.counter, column = 0,pady=(20, 0), padx=(20, 20), sticky='nsew')
-                self.counter += 1
-        
+                self.counter += 1'''
+        self.FindDriver()
 
     def FindDriver(self):
         self.drivers = {}
+        self.counter = 0
         self.drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_drivers")  
         if self.drivers.status_code == 200:
+            self.client_info = self.drivers.json()
             print(self.client_info)
             for driver in self.client_info:
                 self.name = driver.get('name')
