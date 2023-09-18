@@ -2,6 +2,7 @@ import customtkinter
 import requests
 import threading
 import time
+from accept_passengers import accept_passenger
 
 class DriverPopup(customtkinter.CTkToplevel):
     driver_accepted = False
@@ -44,18 +45,31 @@ class DriverPopup(customtkinter.CTkToplevel):
         self.driver_accepted = False
 
     def check_if_accepted(self):
-        while self.driver_accepted == False:
+        while not self.driver_accepted:
             print("got a new version of accepted drivers from the server")
             self.accepted_drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_accepted_drivers")
             
             if self.accepted_drivers.status_code == 200:
                 self.accepted_drivers_json = self.accepted_drivers.json()
+                print(self.accepted_drivers_json)
                 for i, self.driver in enumerate(self.accepted_drivers_json):
-                    print(self.driver.get('driver_name'))
-                    if self.driver.get('driver_name') == self.driver_name:
+                    
+                    # Check if driver_name or driver_age is None and handle it
+                    if self.driver_name == self.driver.get("driver_name") :
                         print("This driver got accepted")
+                        self.passenger_info = {
+                            'passenger_name': self.driver.get('passenger_name'),
+                            'passenger_age': self.driver.get('passenger_age'),
+                            'driver_name': self.driver.get('driver_name'),
+                            'driver_age': self.driver.get('driver_age'),
+                            'driver_numplate': self.driver.get('driver_numplate')
+                        }
+                        accept_passenger(self.passenger_info)
                         self.driver_accepted = True
+            else:
+                print(f"Failed to get accepted driver information. Status code: {self.accepted_drivers.status_code}")
             time.sleep(3)
+
         
 
 
