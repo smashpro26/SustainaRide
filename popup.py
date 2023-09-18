@@ -77,7 +77,7 @@ class GetPicked(customtkinter.CTkToplevel):
     def __init__(self,passenger_start_coordinates, passenger_end_coordinates, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.passenger_start_coordinates = passenger_start_coordinates
-        self.passenger_end_coordinates = passenger_start_coordinates
+        self.passenger_end_coordinates = passenger_end_coordinates
         self.geometry("400x300")
         
         self.enter_name= customtkinter.CTkEntry(master=self,placeholder_text="Enter your name: ")
