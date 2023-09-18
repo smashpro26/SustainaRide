@@ -16,6 +16,8 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_requests_frame = customtkinter.CTkScrollableFrame(master=self,label_text="Incoming Passenger Request",)
         self.passenger_requests_frame.grid(row=0, column=0,sticky = "nsew")
         
+
+        
         self.passenger_start_lat = self.passenger_info.get('passenger_start_coordinates')[0]
         self.passenger_start_lon = self.passenger_info.get('passenger_start_coordinates')[1]
 
