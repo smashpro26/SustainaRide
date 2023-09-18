@@ -69,12 +69,12 @@ class DriverPopup(customtkinter.CTkToplevel):
                             'passenger_name': self.driver.get('passenger_name'),
                             'passenger_age': self.driver.get('passenger_age'),
                             'passenger_start':self.driver.get('passenger_start'),
-                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_finaldest'),
+                            'passenger_end_coordinates' : self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_end_coordinates'),
                             'driver_name': self.driver.get('driver_name'),
                             'driver_age': self.driver.get('driver_age'),
                             'driver_numplate': self.driver.get('driver_numplate')
                         }
-                        print(self.passenger_info['passenger_finaldest'])
+                        print(self.passenger_info['passenger_end_coordinates'])
                         accept_passenger(self.passenger_info)
                         self.driver_accepted = True
             else:
