@@ -28,7 +28,7 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.accepted_passenger_info = {
             'passenger_name': self.passenger_info['passenger_name'],
             'passengers_age': self.passenger_info['passenger_age'],
-            'passenger_finaldest' : self.passenger_info['passenger_finaldest'],
+            'passenger_end_coordinates' : self.passenger_info['passenger_end_coordinates'],
             'driver_name': self.passenger_info['driver_name'],
             'driver_age' : self.passenger_info['driver_age'],
             'driver_numplate': self.passenger_info['driver_numplate']
