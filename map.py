@@ -194,6 +194,7 @@ class App(customtkinter.CTk):
             self.ask_for_recommendation()
             self.pick_others.configure(state = "normal")
             self.get_picked.configure(state= "normal")
+    
 
 
             
