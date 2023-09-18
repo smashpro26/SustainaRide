@@ -60,7 +60,7 @@ class DriverPopup(customtkinter.CTkToplevel):
             if self.accepted_drivers.status_code == 200:
                 self.accepted_drivers_json = self.accepted_drivers.json()
                 print(self.accepted_drivers_json)
-                for self.driver in enumerate(self.accepted_drivers_json):
+                for self.driver in self.accepted_drivers_json:
                     
                     # Check if driver_name or driver_age is None and handle it
                     if self.driver_name == self.driver.get("driver_name") :
