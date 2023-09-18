@@ -16,11 +16,9 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_requests_frame = customtkinter.CTkScrollableFrame(master=self,label_text="Incoming Passenger Request",)
         self.passenger_requests_frame.grid(row=0, column=0,sticky = "nsew")
         
-        if self.passenger_start_lat and self.passenger_start_lon is not None:
-            self.passenger_start_lat = self.passenger_info.get('passenger_start_coordinates')[0]
-            self.passenger_start_lon = self.passenger_info.get('passenger_start_coordinates')[1]
-        else:
-            print('Information not obtained')
+
+        self.passenger_start_lat = self.passenger_info.get('passenger_start_coordinates')[0]
+        self.passenger_start_lon = self.passenger_info.get('passenger_start_coordinates')[1]
 
         self.passenger_end_lat = self.passenger_info.get('passenger_end_coordinates')[0]
         self.passenger_end_lon = self.passenger_info.get('passenger_end_coordinates')[1]
