@@ -60,7 +60,7 @@ class PickOthers(customtkinter.CTkToplevel):
                 response.raise_for_status()  # Raise an exception for HTTP errors
                 response_data = response.json()
                 print(response.status_code)
-                DriverPanel(self.name)
+                DriverPanel(self.name) 
             except requests.exceptions.RequestException as e:
                  print(f"Request error: {e}")
 
@@ -74,9 +74,10 @@ def PickUpOthers(driver_start_coordinates):
     
 
 class GetPicked(customtkinter.CTkToplevel):
-    def __init__(self,passenger_start_coordinates, *args, **kwargs):
+    def __init__(self,passenger_start_coordinates, passenger_end_coordinates, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.passenger_start_coordinates = passenger_start_coordinates
+        self.passenger_end_coordinates = passenger_start_coordinates
         self.geometry("400x300")
         
         self.enter_name= customtkinter.CTkEntry(master=self,placeholder_text="Enter your name: ")
@@ -100,7 +101,8 @@ class GetPicked(customtkinter.CTkToplevel):
             self.data_to_send = {
                 "name" : self.name, 
                 "age" : self.age,
-                "passenger_start_coordinates": self.passenger_start_coordinates
+                "passenger_start_coordinates": self.passenger_start_coordinates,
+                "passenger_end_coordinates": self.passenger_end_coordinates
                 }
 
             try:
@@ -116,10 +118,10 @@ class GetPicked(customtkinter.CTkToplevel):
 
         
 
-def GetPickedUp(passenger_start_coordinates):
+def GetPickedUp(passenger_start_coordinates, passenger_end_coordinates):
     toplevel_window = None
     if toplevel_window is None or not toplevel_window.winfo_exists():
-        toplevel_window = GetPicked(passenger_start_coordinates)  # create window if its None or destroyed
+        toplevel_window = GetPicked(passenger_start_coordinates, passenger_end_coordinates)  # create window if its None or destroyed
     else:
         toplevel_window.focus()  # if window exists focus it
 

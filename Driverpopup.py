@@ -3,6 +3,8 @@ import requests
 import threading
 import time
 from accept_passengers import accept_passenger
+from Passengerpopup import PassengerPopup
+
 
 class DriverPopup(customtkinter.CTkToplevel):
     driver_accepted = False
@@ -29,6 +31,8 @@ class DriverPopup(customtkinter.CTkToplevel):
             for passenger in self.client_info:
                 self.name = passenger.get('name')
                 self.age = str(passenger.get('age'))
+                self.start = passenger.get('start')
+                self.finaldest = passenger.get('finaldest')
                 passenger = customtkinter.CTkLabel(master=self.passengerlist_scrollable,text="Name: " + self.name + " Age: " + self.age)
                 passenger.grid(row = self.counter, column = 0,pady=(20, 0), padx=(20, 20), sticky='nsew')
                 self.counter += 1
@@ -45,9 +49,13 @@ class DriverPopup(customtkinter.CTkToplevel):
         self.driver_accepted = False
 
     def check_if_accepted(self):
-        while not self.driver_accepted:
+        while not (self.driver_accepted):
             print("got a new version of accepted drivers from the server")
             self.accepted_drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_accepted_drivers")
+            self.passenger_data = requests.get(f"http://surveyer.pythonanywhere.com/get_passengers")
+            self.passenger_data_json = self.passenger_data.json()
+            self.driver_accepted = True
+
             
             if self.accepted_drivers.status_code == 200:
                 self.accepted_drivers_json = self.accepted_drivers.json()
@@ -60,6 +68,8 @@ class DriverPopup(customtkinter.CTkToplevel):
                         self.passenger_info = {
                             'passenger_name': self.driver.get('passenger_name'),
                             'passenger_age': self.driver.get('passenger_age'),
+                            'passenger_start':self.driver.get('passenger_start'),
+                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count]['passenger_finaldest'],
                             'driver_name': self.driver.get('driver_name'),
                             'driver_age': self.driver.get('driver_age'),
                             'driver_numplate': self.driver.get('driver_numplate')

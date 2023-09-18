@@ -7,6 +7,7 @@ import math
 class PassengerPopup(customtkinter.CTkToplevel):
     def __init__(self,passenger_data, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.count = None
         self.passenger_data = passenger_data
         self.geometry("400x300")    
         self.driver_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindDriver)
@@ -79,7 +80,8 @@ class PassengerPopup(customtkinter.CTkToplevel):
 
         print(self.drivers)
 
-    def AcceptDriver(self, count):
+    def AcceptDriver(self,count):
+        self.count = count
         print(self.passenger_data['name'])
         self.accepted_driver_name = self.client_info[count].get('name')
 
@@ -88,7 +90,10 @@ class PassengerPopup(customtkinter.CTkToplevel):
             'driver_age' : self.client_info[count].get('age'),
             'driver_numplate': self.client_info[count].get('numplate'),
             'passenger_name': self.passenger_data['name'],
-            'passenger_age': self.passenger_data['age']
+            'passenger_age': self.passenger_data['age'],
+            #'passenger_start': self.passenger_data['passenger_start'],
+            'passenger_finaldest': self.passenger_data.get("passenger_finaldest"), 
+            'passenger_index': count 
         }
 
         self.accepted_drivers = requests.post(f"http://surveyer.pythonanywhere.com/driver_accepted", json= self.data_to_send)
@@ -99,6 +104,9 @@ class PassengerPopup(customtkinter.CTkToplevel):
             self.toplevel_window = WaitForDriverResponse(self.passenger_data)
         else:
             self.toplevel_window.focus()  # if window exists focus it
+    
+    def get_count(self):
+        return self.count
     
     
         

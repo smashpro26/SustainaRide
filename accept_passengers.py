@@ -1,6 +1,7 @@
 import customtkinter
 import requests
 
+
 class AcceptPassenger(customtkinter.CTkToplevel):
     def __init__(self,passenger_info, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,7 +15,7 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_requests_frame = customtkinter.CTkScrollableFrame(master=self,label_text="Incoming Passenger Request",)
         self.passenger_requests_frame.grid(row=0, column=0,sticky = "nsew")
 
-        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=self.passenger_info['passenger_name']+ " "+self.passenger_info['passenger_age'])
+        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=self.passenger_info['passenger_name']+ " "+self.passenger_info['passenger_age']+ " "+self.passenger_info['passenger_finaldest'] )
         self.passenger_label.grid(pady=(20, 0), padx=(20, 20), row=0, column=0,sticky = "ew")
 
         self.accept_button = customtkinter.CTkButton(master=self.passenger_requests_frame, text="Accept", command=self.accept_incoming_passenger)
