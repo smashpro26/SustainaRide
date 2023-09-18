@@ -1,5 +1,6 @@
 import customtkinter
 import requests
+from Reversegeocode import reverse_geocode
 
 
 class AcceptPassenger(customtkinter.CTkToplevel):
@@ -15,14 +16,14 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_requests_frame = customtkinter.CTkScrollableFrame(master=self,label_text="Incoming Passenger Request",)
         self.passenger_requests_frame.grid(row=0, column=0,sticky = "nsew")
 
-        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=f"Passenger Name: {self.passenger_info['passenger_name']}, Age: {self.passenger_info['passenger_age']}, Final Destination: {self.passenger_info.get('passenger_end_coordinates')}")
+        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=f"Passenger Name: {self.passenger_info['passenger_name']}, Age: {self.passenger_info['passenger_age']}, Final Destination: {reverse_geocode(self.passenger_info.get('passenger_end_coordinates'))}")
         self.passenger_label.grid(pady=(20, 0), padx=(20, 20), row=0, column=0,sticky = "ew")
 
         self.accept_button = customtkinter.CTkButton(master=self.passenger_requests_frame, text="Accept", command=self.accept_incoming_passenger)
-        self.accept_button.grid(row=0, column=1,pady=(20, 0), padx=(20, 20),sticky = "ew")
+        self.accept_button.grid(row=1, column=1,pady=(20, 0), padx=(20, 20),sticky = "ew")
 
         self.decline_button = customtkinter.CTkButton(master = self.passenger_requests_frame,text="Decline")
-        self.decline_button.grid(row=0, column=3,pady=(20, 0), padx=(20, 20),sticky = "ew")
+        self.decline_button.grid(row=1, column=3,pady=(20, 0), padx=(20, 20),sticky = "ew")
 
     def accept_incoming_passenger(self):
         self.accepted_passenger_info = {
