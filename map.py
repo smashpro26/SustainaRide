@@ -221,13 +221,13 @@ class App(customtkinter.CTk):
 
     #creates a popup window for picking others up
     def pick_others_up(self):
-        PickUpOthers()
+        PickUpOthers(self.marker_list[0].position)
 
 
     
     #creates a popup window for getting picked up
     def get_picked_up(self):
-        GetPickedUp(self.marker_list[0].position,self.marker_list[1])
+        GetPickedUp(self.marker_list[0].position)
         
 
     #ability to change from dark or light mode

@@ -2,6 +2,7 @@ import customtkinter
 import requests
 import time
 import threading
+import math
 
 class PassengerPopup(customtkinter.CTkToplevel):
     def __init__(self,passenger_data, *args, **kwargs):
@@ -20,6 +21,31 @@ class PassengerPopup(customtkinter.CTkToplevel):
 
         self.FindDriver()
 
+    def passenger_close_enough_to_driver(self,driver_lat,driver_lon,passenger_lat,passenger_lon,driver_pickup_range):
+        # Radius of the Earth in miles
+        earth_radius = 3958.8  # miles
+
+        # Convert latitude and longitude from degrees to radians
+        lat1_rad = math.radians(driver_lat)
+        lon1_rad = math.radians(driver_lon)
+        lat2_rad = math.radians(passenger_lat)
+        lon2_rad = math.radians(passenger_lon)
+
+        # Haversine formula
+        dlon = lon2_rad - lon1_rad
+        dlat = lat2_rad - lat1_rad
+        a = math.sin(dlat/2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon/2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        distance = earth_radius * c
+        
+        #Check if passenger is in range
+        if distance <= float(driver_pickup_range):
+            return True
+        else:
+            return False
+        
+
+
     def FindDriver(self):
         self.drivers = {}
         self.counter = 0
@@ -29,17 +55,17 @@ class PassengerPopup(customtkinter.CTkToplevel):
             self.client_info = self.drivers.json()
             print(self.client_info)
             for self.counter, driver in enumerate(self.client_info):
-                self.name = driver.get('name')
-                self.age = str(driver.get('age'))
-                self.num_plate = str(driver.get('numplate'))
-                print(self.name + " " + self.age + " " + self.num_plate)
-                driver_button = customtkinter.CTkButton(
-                    master=self.driverlist_scrollable,
-                    text="Name: " + self.name + " Age: " + self.age + " Numberplate: " + self.num_plate,
-                    command=lambda count=self.counter: self.AcceptDriver(count)
-
-                )
-                driver_button.grid(row=self.counter, column=0, pady=(20, 0), padx=(20, 20), sticky='nsew')
+                if self.passenger_close_enough_to_driver(driver_lat=driver.get('driver_start_coordinates')[0],driver_lon= driver.get('driver_start_coordinates')[1],driver_pickup_range=driver.get('driver_pickup_range'),passenger_lat=self.passenger_data['passenger_start_coordinates'][0],passenger_lon=self.passenger_data['passenger_start_coordinates'][1]) == True:
+                    self.name = driver.get('name')
+                    self.age = str(driver.get('age'))
+                    self.num_plate = str(driver.get('numplate'))
+                    print(self.name + " " + self.age + " " + self.num_plate)
+                    driver_button = customtkinter.CTkButton(
+                        master=self.driverlist_scrollable,
+                        text="Name: " + self.name + " Age: " + self.age + " Numberplate: " + self.num_plate,
+                        command=lambda count=self.counter: self.AcceptDriver(count)
+                    )
+                    driver_button.grid(row=self.counter, column=0, pady=(20, 0), padx=(20, 20), sticky='nsew')
         else:
             print(f"Failed to get driver information. Status code: {self.drivers.status_code}")
             print("Press the refresh button: ")
@@ -66,6 +92,8 @@ class PassengerPopup(customtkinter.CTkToplevel):
             self.toplevel_window = WaitForDriverResponse(self.passenger_data)
         else:
             self.toplevel_window.focus()  # if window exists focus it
+    
+    
         
         
 
