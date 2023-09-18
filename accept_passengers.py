@@ -30,10 +30,10 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_label.grid(pady=(20, 0), padx=(20, 20), row=0, column=0,sticky = "ew")
 
         self.accept_button = customtkinter.CTkButton(master=self.passenger_requests_frame, text="Accept", command=self.accept_incoming_passenger)
-        self.accept_button.grid(row=2, column=1,pady=(20, 0), padx=(20, 20),sticky = "ew")
+        self.accept_button.grid(row=2, column=1,pady=(20, 0), padx=(20, 20),sticky = "w")
 
         self.decline_button = customtkinter.CTkButton(master = self.passenger_requests_frame,text="Decline")
-        self.decline_button.grid(row=2, column=2,pady=(20, 0), padx=(20, 20),sticky = "ew")
+        self.decline_button.grid(row=2, column=2,pady=(20, 0), padx=(20, 20),sticky = "w")
 
     def accept_incoming_passenger(self):
         self.accepted_passenger_info = {

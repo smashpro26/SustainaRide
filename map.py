@@ -10,6 +10,8 @@ import requests
 from popup import PickUpOthers, GetPickedUp
 from text_to_speech import play_text_as_audio, stop_audio_thread
 import os
+from data_server import drivers, passengers, accepted_drivers 
+
 customtkinter.set_default_color_theme("blue")
 #Creating the app class
 class App(customtkinter.CTk):
@@ -253,6 +255,9 @@ class App(customtkinter.CTk):
 
     #terminates application
     def on_closing(self, event=0):
+        self.drivers = []
+        self.passengers = []
+        self.accepted_drivers = []
         stop_audio_thread()
         self.destroy()
 
