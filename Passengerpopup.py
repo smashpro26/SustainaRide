@@ -71,7 +71,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
                     driver_button = customtkinter.CTkButton(
                         master=self.driverlist_scrollable,
                         text="Name: " + self.name + " Age: " + self.age + " Numberplate: " + self.num_plate,
-                        command=lambda count=self.counter: self.AcceptDriver(count)
+                        command= self.AcceptDriver
                     )
                     driver_button.grid(row=self.counter, column=0, pady=(20, 0), padx=(20, 20), sticky='nsew')
         else:
@@ -80,20 +80,19 @@ class PassengerPopup(customtkinter.CTkToplevel):
 
         print(self.drivers)
 
-    def AcceptDriver(self,count):
-        self.count = count
+    def AcceptDriver(self):
         print(self.passenger_data['name'])
-        self.accepted_driver_name = self.client_info[count].get('name')
+        self.accepted_driver_name = self.client_info[self.counter].get('name')
 
         self.data_to_send = {
             'driver_name': self.accepted_driver_name,
-            'driver_age' : self.client_info[count].get('age'),
-            'driver_numplate': self.client_info[count].get('numplate'),
+            'driver_age' : self.client_info[self.counter].get('age'),
+            'driver_numplate': self.client_info[self.count].get('numplate'),
             'passenger_name': self.passenger_data['name'],
             'passenger_age': self.passenger_data['age'],
             #'passenger_start': self.passenger_data['passenger_start'],
             'passenger_finaldest': self.passenger_data.get("passenger_finaldest"), 
-            'passenger_index': count 
+            'passenger_index': self.counter
         }
 
         self.accepted_drivers = requests.post(f"http://surveyer.pythonanywhere.com/driver_accepted", json= self.data_to_send)
@@ -106,7 +105,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
             self.toplevel_window.focus()  # if window exists focus it
     
     def get_count(self):
-        return self.count
+        return self.counter
     
     
         
