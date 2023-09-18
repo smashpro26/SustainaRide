@@ -55,7 +55,14 @@ class PassengerPopup(customtkinter.CTkToplevel):
             self.client_info = self.drivers.json()
             print(self.client_info)
             for self.counter, driver in enumerate(self.client_info):
-                if self.passenger_close_enough_to_driver(driver_lat=driver.get('driver_start_coordinates')[0],driver_lon= driver.get('driver_start_coordinates')[1],driver_pickup_range=driver.get('driver_pickup_range'),passenger_lat=self.passenger_data['passenger_start_coordinates'][0],passenger_lon=self.passenger_data['passenger_start_coordinates'][1]) == True:
+                if self.passenger_close_enough_to_driver(
+                    driver_lat=driver.get('driver_start_coordinates')[0],
+                    driver_lon= driver.get('driver_start_coordinates')[1],
+                    driver_pickup_range=driver.get('driver_pickup_range'),
+                    passenger_lat=self.passenger_data['passenger_start_coordinates'][0],
+                    passenger_lon=self.passenger_data['passenger_start_coordinates'][1]
+                    ) == True:
+                    
                     self.name = driver.get('name')
                     self.age = str(driver.get('age'))
                     self.num_plate = str(driver.get('numplate'))
