@@ -61,7 +61,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                 self.accepted_drivers_json = self.accepted_drivers.json()
                 print(self.accepted_drivers_json)
                 for self.driver in self.accepted_drivers_json:
-                    
+                    print(self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_finaldest'))
                     # Check if driver_name or driver_age is None and handle it
                     if self.driver_name == self.driver.get("driver_name") :
                         print("This driver got accepted")
