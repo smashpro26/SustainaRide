@@ -69,7 +69,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                             'passenger_name': self.driver.get('passenger_name'),
                             'passenger_age': self.driver.get('passenger_age'),
                             'passenger_start':self.driver.get('passenger_start'),
-                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count(self)]['passenger_finaldest'],
+                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count(self)-1]['passenger_finaldest'],
                             'driver_name': self.driver.get('driver_name'),
                             'driver_age': self.driver.get('driver_age'),
                             'driver_numplate': self.driver.get('driver_numplate')

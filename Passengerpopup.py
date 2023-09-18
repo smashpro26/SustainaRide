@@ -87,7 +87,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
         self.data_to_send = {
             'driver_name': self.accepted_driver_name,
             'driver_age' : self.client_info[self.counter].get('age'),
-            'driver_numplate': self.client_info[self.count].get('numplate'),
+            'driver_numplate': self.client_info[self.counter].get('numplate'),
             'passenger_name': self.passenger_data['name'],
             'passenger_age': self.passenger_data['age'],
             #'passenger_start': self.passenger_data['passenger_start'],
