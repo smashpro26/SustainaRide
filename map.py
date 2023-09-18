@@ -8,8 +8,8 @@ from bard_ai import bard_GetAnswer
 from Reversegeocode import reverse_geocode
 import requests
 from popup import PickUpOthers, GetPickedUp
-
-
+from text_to_speech import play_text_as_audio, stop_audio_thread
+import os
 customtkinter.set_default_color_theme("blue")
 #Creating the app class
 class App(customtkinter.CTk):
@@ -142,7 +142,11 @@ class App(customtkinter.CTk):
         self.userinput_entry.bind("<Return>", self.user_input)
 
         self.enter_button = customtkinter.CTkButton(master=self.right_column, text="Enter", command=self.user_input)
-        self.enter_button.grid(row=1, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=2)
+        self.enter_button.grid(row=1, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=1)
+
+
+        self.speak_button = customtkinter.CTkButton(master=self.right_column,state= "disabled",text="Speak text", command= self.text_to_speech)
+        self.speak_button.grid(row=1, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
 
         self.textframe = customtkinter.CTkScrollableFrame(master=self.right_column, label_text="Your Trip Planner",width=250)
@@ -195,18 +199,19 @@ class App(customtkinter.CTk):
             
     def ask_for_recommendation(self):
         prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.start_address)+ " to "+ str(self.end_address) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
-        answer = bard_GetAnswer(prompt)
-        self.info_label.configure(text=answer['content'], anchor='w')
+        self.answer = bard_GetAnswer(prompt)
+        self.info_label.configure(text=self.answer['content'], anchor='w')
         print(str(self.start_address))
         print(str(self.end_address))
+        self.speak_button.configure(state= "normal")
 
     
     
     def user_input(self,event=None):
         prompt = self.userinput_entry.get()
-        answer = bard_GetAnswer(prompt)
-        self.info_label.configure(text=answer['content'], anchor='w')
-        print(answer['content']) in self.textframe
+        self.answer = bard_GetAnswer(prompt)
+        self.info_label.configure(text=self.answer['content'], anchor='w')
+        print(self.answer['content']) in self.textframe
         
  
     #clears the placed marker(s) and path 
@@ -218,6 +223,10 @@ class App(customtkinter.CTk):
         self.num_of_markers = 0
         self.pick_others.configure(state = "disabled")
         self.get_picked.configure(state= "disabled")
+        self.speak_button.configure(state = "disabled")
+    
+    def text_to_speech(self):
+        play_text_as_audio(self.answer['content'])
 
     #creates a popup window for picking others up
     def pick_others_up(self):
@@ -243,6 +252,7 @@ class App(customtkinter.CTk):
 
     #terminates application
     def on_closing(self, event=0):
+        stop_audio_thread()
         self.destroy()
 
     
