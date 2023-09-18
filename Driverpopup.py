@@ -32,7 +32,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                 self.name = passenger.get('name')
                 self.age = str(passenger.get('age'))
                 self.start = passenger.get('start')
-                self.finaldest = passenger.get('finaldest')
+                self.passenger_end_coordinates = passenger.get('passenger_end_coordinates')
                 passenger = customtkinter.CTkLabel(master=self.passengerlist_scrollable,text="Name: " + self.name + " Age: " + self.age)
                 passenger.grid(row = self.counter, column = 0,pady=(20, 0), padx=(20, 20), sticky='nsew')
                 self.counter += 1
