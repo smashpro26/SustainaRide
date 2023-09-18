@@ -74,6 +74,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                             'driver_age': self.driver.get('driver_age'),
                             'driver_numplate': self.driver.get('driver_numplate')
                         }
+                        print(self.passenger_info['passenger_finaldest'])
                         accept_passenger(self.passenger_info)
                         self.driver_accepted = True
             else:
