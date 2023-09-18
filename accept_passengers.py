@@ -16,7 +16,7 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.passenger_requests_frame = customtkinter.CTkScrollableFrame(master=self,label_text="Incoming Passenger Request",)
         self.passenger_requests_frame.grid(row=0, column=0,sticky = "nsew")
 
-        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=f"Passenger Name: {self.passenger_info['passenger_name']}, Age: {self.passenger_info['passenger_age']}, Final Destination: {reverse_geocode(self.passenger_info.get('passenger_end_coordinates'))}")
+        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text=f"Passenger Name: {self.passenger_info['passenger_name']}, Age: {self.passenger_info['passenger_age']}, Final Destination: {reverse_geocode(self.passenger_info.get('passenger_end_coordinates')[0],self.passenger_info.get('passenger_end_coordinates')[1])}")
         self.passenger_label.grid(pady=(20, 0), padx=(20, 20), row=0, column=0,sticky = "ew")
 
         self.accept_button = customtkinter.CTkButton(master=self.passenger_requests_frame, text="Accept", command=self.accept_incoming_passenger)
