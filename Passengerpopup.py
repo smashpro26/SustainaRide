@@ -91,7 +91,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
             'passenger_name': self.passenger_data['name'],
             'passenger_age': self.passenger_data['age'],
             #'passenger_start': self.passenger_data['passenger_start'],
-            'passenger_finaldest': self.passenger_data.get("passenger_finaldest"), 
+            'passenger_end_coordinates': self.passenger_data.get("passenger_end_coordinates"), 
             'passenger_index': self.counter
         }
 
