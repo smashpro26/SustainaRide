@@ -54,13 +54,13 @@ class DriverPopup(customtkinter.CTkToplevel):
             self.accepted_drivers = requests.get(f"http://surveyer.pythonanywhere.com/get_accepted_drivers")
             self.passenger_data = requests.get(f"http://surveyer.pythonanywhere.com/get_passengers")
             self.passenger_data_json = self.passenger_data.json()
-            self.driver_accepted = True
+            
 
             
             if self.accepted_drivers.status_code == 200:
                 self.accepted_drivers_json = self.accepted_drivers.json()
                 print(self.accepted_drivers_json)
-                for i, self.driver in enumerate(self.accepted_drivers_json):
+                for self.driver in enumerate(self.accepted_drivers_json):
                     
                     # Check if driver_name or driver_age is None and handle it
                     if self.driver_name == self.driver.get("driver_name") :
@@ -69,7 +69,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                             'passenger_name': self.driver.get('passenger_name'),
                             'passenger_age': self.driver.get('passenger_age'),
                             'passenger_start':self.driver.get('passenger_start'),
-                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count]['passenger_finaldest'],
+                            'passenger_finaldest' : self.passenger_data_json[PassengerPopup.get_count()]['passenger_finaldest'],
                             'driver_name': self.driver.get('driver_name'),
                             'driver_age': self.driver.get('driver_age'),
                             'driver_numplate': self.driver.get('driver_numplate')
