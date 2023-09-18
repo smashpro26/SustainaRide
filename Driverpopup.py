@@ -69,7 +69,7 @@ class DriverPopup(customtkinter.CTkToplevel):
                             'passenger_name': self.driver.get('passenger_name'),
                             'passenger_age': self.driver.get('passenger_age'),
                             'passenger_start':self.driver.get('passenger_start'),
-                            'passener_start_coordinates': self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_start_coordinates'),
+                            'passenger_start_coordinates': self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_start_coordinates'),
                             'passenger_end_coordinates' : self.passenger_data_json[PassengerPopup.get_count(self)-1].get('passenger_end_coordinates'),
                             'driver_name': self.driver.get('driver_name'),
                             'driver_age': self.driver.get('driver_age'),
