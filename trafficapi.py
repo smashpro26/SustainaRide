@@ -1,6 +1,6 @@
 import requests
 import json
-
+import map
 url = "https://waze.p.rapidapi.com/alerts-and-jams"
 
 querystring = {f"bottom_left":"53.8014739, -1.5465407","top_right":"53.7925515, -1.7580275","max_alerts":"20","max_jams":"20"}
@@ -12,6 +12,6 @@ headers = {
 
 response = requests.get(url, headers=headers, params=querystring)
 
-
-formattedstring = json.dumps(response.json())
-print(formattedstring)
+def CurrentTraffic():
+	formattedstring = json.dumps(response.json())
+	print(formattedstring)
