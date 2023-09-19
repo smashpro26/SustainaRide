@@ -201,7 +201,7 @@ class App(customtkinter.CTk):
 
             
     def ask_for_recommendation(self):
-        prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.marker_list[0].position)+ " to "+ str(self.marker_list[1].position) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
+        prompt = "Recommend the ideal mode of transport for someone travelling between: " + self.start_address+ " to "+ self.end_address +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
         self.answer = get_answer(prompt)
         self.info_label.configure(text=self.answer, anchor='w')
         print(str(self.start_address))

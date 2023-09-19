@@ -2,7 +2,7 @@ import requests
 
 url = "https://waze.p.rapidapi.com/alerts-and-jams"
 
-querystring = {"bottom_left":"40.66615391742187,-74.13732147216798","top_right":"40.772787404902594,-73.76818084716798","max_alerts":"20","max_jams":"20"}
+querystring = {"bottom_left":"53.8014739 -1.5465407","top_right":"53.7925515 -1.7580275","max_alerts":"20","max_jams":"20"}
 
 headers = {
 	"X-RapidAPI-Key": "8f4903e1a3mshf8781849e3ccaaep1cdf5cjsn9944317a9d62",
