@@ -48,7 +48,7 @@ def save_audio(audio_frames, output_filename):
 #============================AssemblyAI Speech To Text========================================
 aai.settings.api_key = os.environ['ASSEMBLYAI_API_TOKEN']
 
-
+#transcribing the audio
 def transcribe_audio(file_path):
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(file_path)
