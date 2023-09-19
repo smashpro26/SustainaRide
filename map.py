@@ -4,7 +4,7 @@ from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
 import directions
-from bard_ai import bard_GetAnswer
+from llama_ai import get_answer
 from Reversegeocode import reverse_geocode
 import requests
 from popup import PickUpOthers, GetPickedUp
@@ -202,8 +202,8 @@ class App(customtkinter.CTk):
             
     def ask_for_recommendation(self):
         prompt = "Recommend the ideal mode of transport for someone travelling between: " + str(self.marker_list[0].position)+ " to "+ str(self.marker_list[1].position) +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
-        self.answer = bard_GetAnswer(prompt)
-        self.info_label.configure(text=self.answer['content'], anchor='w')
+        self.answer = get_answer(prompt)
+        self.info_label.configure(text=self.answer, anchor='w')
         print(str(self.start_address))
         print(str(self.end_address))
         self.speak_button.configure(state= "normal")
@@ -212,9 +212,9 @@ class App(customtkinter.CTk):
     
     def user_input(self,event=None):
         prompt = self.userinput_entry.get()
-        self.answer = bard_GetAnswer(prompt)
-        self.info_label.configure(text=self.answer['content'], anchor='w')
-        print(self.answer['content']) in self.textframe
+        self.answer = get_answer(prompt)
+        self.info_label.configure(text=self.answer, anchor='w')
+        print(self.answer) in self.textframe
         
  
     #clears the placed marker(s) and path 
