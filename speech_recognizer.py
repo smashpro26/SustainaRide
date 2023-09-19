@@ -1,47 +1,58 @@
-import pyaudio
+import pvrecorder
 import wave
-import assemblyai as aai
 import os
+import assemblyai as aai
+import wave
+import struct
+import threading
 
-# Set the audio parameters
-FORMAT = pyaudio.paInt16  # Format for audio recording
-CHANNELS = 1              # Number of audio channels (1 for mono, 2 for stereo)
-RATE = 44100              # Sample rate (samples per second)
-
-# Initialize the audio stream and frames list
-audio = pyaudio.PyAudio()
-frames = []
+recorder = pvrecorder.PvRecorder(device_index=-1, frame_length=512)
+recording = False
+audio = []
 
 # Function to start recording
 def start_recording():
-    global frames
-    frames = []  # Clear the frames list
-    stream = audio.open(format=FORMAT, channels=CHANNELS,
-                        rate=RATE, input=True,
-                        frames_per_buffer=1024)
+    global recording
+    global audio
+    global recorder
+    recording = True
+    recorder.start()
+    record_thread = threading.Thread(target=record)
+    record_thread.start()
     print("Recording...")
-    return stream
 
+def record():
+     while recording:
+            print("got in here")
+            frame = recorder.read()
+            audio.extend(frame)
 # Function to stop recording and save the audio
-def stop_recording(stream, output_filename):
-    stream.stop_stream()
-    stream.close()
-    print("Finished recording.")
-    save_audio(output_filename)
+def stop_recording(output_filename):
+    global recording
+    recording = False
+    recorder.stop()
+    save_audio(audio, output_filename)
 
 # Function to save the recorded audio as a WAV file
-def save_audio(output_filename):
-    with wave.open(output_filename, 'wb') as wf:
-        wf.setnchannels(CHANNELS)
-        wf.setsampwidth(audio.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(b''.join(frames))
+
+
+# Function to save the recorded audio as a WAV file
+def save_audio(audio_frames, output_filename):
+    with wave.open(output_filename, 'wb') as f:
+        f.setparams((1, 2, 16000, 0, "NONE", "NONE"))  # Adjust parameters as needed
+        f.writeframes(struct.pack("h" * len(audio_frames), *audio_frames))
     print(f"Audio saved as {output_filename}")
 
-#============================AssemblyAI Speach To Text========================================
+
+
+#============================AssemblyAI Speech To Text========================================
 aai.settings.api_key = os.environ['ASSEMBLYAI_API_TOKEN']
-FILE_URL = "https://github.com/AssemblyAI-Examples/audio-examples/raw/main/20230607_me_canadian_wildfires.mp3"
-transcriber = aai.Transcriber()
-def transcribe():
-    transcript = transcriber.transcribe(FILE_URL)
+
+
+def transcribe_audio(file_path):
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(file_path)
+    print (transcript.text)
     return transcript
+
+

@@ -252,12 +252,13 @@ class App(customtkinter.CTk):
             self.toggle_state = True
     
     def start_mic(self):
-        self.recording_stream = speech_recognizer.start_recording()
+        speech_recognizer.start_recording()
         self.listen_button.configure(text= "Stop Listening")
     
     def end_mic(self):
-        speech_recognizer.stop_recording(self.recording_stream,"voice_recording.wav")
+        speech_recognizer.stop_recording("voice_recording.wav")
         self.listen_button.configure(text= "Start Listening")
+        self.transcript = speech_recognizer.transcribe_audio("voice_recording.wav")
     
     #creates a popup window for picking others up
     def pick_others_up(self):
