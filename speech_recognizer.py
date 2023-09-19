@@ -1,5 +1,7 @@
 import pyaudio
 import wave
+import assemblyai as aai
+import os
 
 # Set the audio parameters
 FORMAT = pyaudio.paInt16  # Format for audio recording
@@ -35,3 +37,11 @@ def save_audio(output_filename):
         wf.setframerate(RATE)
         wf.writeframes(b''.join(frames))
     print(f"Audio saved as {output_filename}")
+
+#============================AssemblyAI Speach To Text========================================
+aai.settings.api_key = os.environ['ASSEMBLYAI_API_TOKEN']
+FILE_URL = "https://github.com/AssemblyAI-Examples/audio-examples/raw/main/20230607_me_canadian_wildfires.mp3"
+transcriber = aai.Transcriber()
+def transcribe():
+    transcript = transcriber.transcribe(FILE_URL)
+    return transcript

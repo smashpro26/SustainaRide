@@ -9,6 +9,7 @@ from Reversegeocode import reverse_geocode
 from popup import PickUpOthers, GetPickedUp
 from text_to_speech import play_text_as_audio, stop_audio_thread
 import threading
+import speech_recognizer
 
 customtkinter.set_default_color_theme("blue")
 #Creating the app class
@@ -24,6 +25,8 @@ class App(customtkinter.CTk):
 
         self.path_1 = None
         self.num_of_markers =0
+        self.toggle_state = True
+
         #Configuring the window
         self.title(App.APP_NAME)
         self.geometry(str(App.WIDTH) + "x" + str(App.HEIGHT))
@@ -135,7 +138,7 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(0, weight=1)  # Configure the row to expand vertically
         self.right_column.grid_columnconfigure(0, weight=1)
         #self.right_column.grid_columnconfigure()
-        self.right_column.grid_rowconfigure(2, weight=1)        
+        self.right_column.grid_rowconfigure(3, weight=1)        
         
         self.userinput_entry = customtkinter.CTkEntry(master= self.right_column, placeholder_text="Ask for extra details...")
         self.userinput_entry.grid(row=0, column=2, sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=2)
@@ -148,8 +151,8 @@ class App(customtkinter.CTk):
         self.speak_button = customtkinter.CTkButton(master=self.right_column,state= "disabled",text="Speak text", command= self.text_to_speech)
         self.speak_button.grid(row=1, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
-        self.listen_button = customtkinter.CTkButton(master=self.right_column,text="Speech to text")
-        self.listen_button.grid(row=2, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
+        self.listen_button = customtkinter.CTkButton(master=self.right_column,text="Speech to text", command=self.toggle_microphone)
+        self.listen_button.grid(row=2, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
 
         self.textframe = customtkinter.CTkScrollableFrame(master=self.right_column, label_text="Your Trip Planner",width=250)
@@ -238,7 +241,24 @@ class App(customtkinter.CTk):
     
     def text_to_speech(self):
         play_text_as_audio(self.answer['content'])
+    
 
+    def toggle_microphone(self):
+        if self.toggle_state:
+            self.start_mic()
+            self.toggle_state = False
+        else:
+            self.end_mic()
+            self.toggle_state = True
+    
+    def start_mic(self):
+        self.recording_stream = speech_recognizer.start_recording()
+        self.listen_button.configure(text= "Stop Listening")
+    
+    def end_mic(self):
+        speech_recognizer.stop_recording(self.recording_stream,"voice_recording.wav")
+        self.listen_button.configure(text= "Start Listening")
+    
     #creates a popup window for picking others up
     def pick_others_up(self):
         PickUpOthers(self.marker_list[0].position)
