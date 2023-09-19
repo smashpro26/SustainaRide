@@ -10,7 +10,7 @@ import requests
 from popup import PickUpOthers, GetPickedUp
 from text_to_speech import play_text_as_audio, stop_audio_thread
 import os
-from data_server import drivers, passengers, accepted_drivers 
+import threading
 
 customtkinter.set_default_color_theme("blue")
 #Creating the app class
@@ -156,7 +156,7 @@ class App(customtkinter.CTk):
 
         
 
-        self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='e',text= " ",wraplength=240)
+        self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='e',text= " ",wraplength=295)
         self.info_label.grid(row=0, column=0, sticky="w")
 
 
@@ -201,12 +201,19 @@ class App(customtkinter.CTk):
 
             
     def ask_for_recommendation(self):
-        prompt = "Recommend the ideal mode of transport for someone travelling between: " + self.start_address+ " to "+ self.end_address +" which has a distance of: " + str(self.distance)+ " in metres(convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
-        self.answer = get_answer(prompt)
-        self.info_label.configure(text=self.answer, anchor='w')
-        print(str(self.start_address))
-        print(str(self.end_address))
-        self.speak_button.configure(state= "normal")
+        prompt = "Recommend the ideal mode of transport (car and taxi are also options) for someone traveling between: " + self.start_address + " to " + self.end_address + " which has a distance of: " + str(self.distance) + " in meters (convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
+        self.info_label.configure(text="Waiting for response...", anchor='w')
+
+        def run_get_answer():
+            result = get_answer(prompt)
+            self.answer = result
+            self.info_label.configure(text=result, anchor='w')
+            print(str(self.start_address))
+            print(str(self.end_address))
+            self.speak_button.configure(state="normal")
+
+        self.get_answer_thread = threading.Thread(target=run_get_answer)
+        self.get_answer_thread.start()
 
     
     
@@ -214,7 +221,7 @@ class App(customtkinter.CTk):
         prompt = self.userinput_entry.get()
         self.answer = get_answer(prompt)
         self.info_label.configure(text=self.answer, anchor='w')
-        print(self.answer) in self.textframe
+        #print(self.answer) in self.textframe
         
  
     #clears the placed marker(s) and path 

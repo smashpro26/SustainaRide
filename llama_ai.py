@@ -13,14 +13,14 @@ def bard_GetAnswer(prompt):
 
 
 #os.environ["REPLICATE_API_TOKEN"]  = 'r8_8ixutGw694ewxrQeN4hA3DE1toTBRrr3H1VkQ' 
-preprompt = "You are a helpful assistant who provides information about travelling from place to place.You should provide prices for the public transportation methods you suggest. You do not respond as 'User' or pretend to be 'User'. You only respons once as 'Assistant"
+preprompt = "You are a helpful assistant who provides information about travelling from place to place.You should provide prices for the public transportation methods you suggest. Seperate each mode of transport that you give clearly. You do not respond as 'User' or pretend to be 'User'. You only respons once as 'Assistant"
 
 def get_answer(prompt):
 
-    output = replicate.run("meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3", 
-                        input={'prompt': f"{preprompt} {prompt} Assistant: "},
-                        max_length = 128
-                        )
+    output = replicate.run('a16z-infra/llama13b-v2-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5', # LLM model
+                        input={"prompt": f"{preprompt} {prompt} Assistant: ", # Prompts
+                        "temperature":0.1, "top_p":0.9, "max_length":1024})  # Model parameters
+     
 
     fullresponse = ''
     for item in output:
