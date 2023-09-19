@@ -6,10 +6,8 @@ from tkintermapview import TkinterMapView
 import directions
 from llama_ai import get_answer
 from Reversegeocode import reverse_geocode
-import requests
 from popup import PickUpOthers, GetPickedUp
 from text_to_speech import play_text_as_audio, stop_audio_thread
-import os
 import threading
 
 customtkinter.set_default_color_theme("blue")
@@ -150,9 +148,12 @@ class App(customtkinter.CTk):
         self.speak_button = customtkinter.CTkButton(master=self.right_column,state= "disabled",text="Speak text", command= self.text_to_speech)
         self.speak_button.grid(row=1, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
+        self.listen_button = customtkinter.CTkButton(master=self.right_column,text="Speech to text")
+        self.listen_button.grid(row=2, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
+
 
         self.textframe = customtkinter.CTkScrollableFrame(master=self.right_column, label_text="Your Trip Planner",width=250)
-        self.textframe.grid(pady=(20, 0), padx=(20, 20), row=2, column=2, columnspan=2, sticky="nsew")
+        self.textframe.grid(pady=(20, 0), padx=(20, 20), row=3, column=2, columnspan=2, sticky="nsew")
 
         
 
