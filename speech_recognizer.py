@@ -6,6 +6,7 @@ import wave
 import struct
 import threading
 
+
 recorder = pvrecorder.PvRecorder(device_index=-1, frame_length=512)
 recording = False
 audio = []
@@ -53,6 +54,6 @@ def transcribe_audio(file_path):
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(file_path)
     print (transcript.text)
-    return transcript
+    return transcript.text
 
 

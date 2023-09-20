@@ -259,6 +259,8 @@ class App(customtkinter.CTk):
         speech_recognizer.stop_recording("voice_recording.wav")
         self.listen_button.configure(text= "Start Listening")
         self.transcript = speech_recognizer.transcribe_audio("voice_recording.wav")
+        get_answer(self.transcript)
+
     
     #creates a popup window for picking others up
     def pick_others_up(self):
