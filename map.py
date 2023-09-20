@@ -138,28 +138,30 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(0, weight=1)  # Configure the row to expand vertically
         self.right_column.grid_columnconfigure(0, weight=1)
         #self.right_column.grid_columnconfigure()
-        self.right_column.grid_rowconfigure(3, weight=1)        
-        
+        self.right_column.grid_rowconfigure(3, weight=1)   
+
+        #Text feild for asking the ai another question
         self.userinput_entry = customtkinter.CTkEntry(master= self.right_column, placeholder_text="Ask for extra details...")
         self.userinput_entry.grid(row=0, column=2, sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=2)
         self.userinput_entry.bind("<Return>", self.user_input)
 
+        #Button for entering the user
         self.enter_button = customtkinter.CTkButton(master=self.right_column, text="Enter", command=self.user_input)
         self.enter_button.grid(row=1, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20),columnspan=1)
 
-
+        #Button for text to speech
         self.speak_button = customtkinter.CTkButton(master=self.right_column,state= "disabled",text="Speak text", command= self.text_to_speech)
         self.speak_button.grid(row=1, column=3,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
-        self.listen_button = customtkinter.CTkButton(master=self.right_column,text="Speech to text", command=self.toggle_microphone)
+        #Button for speech to text
+        self.listen_button = customtkinter.CTkButton(master=self.right_column,text="Speech to text", state="normal", command=self.toggle_microphone)
         self.listen_button.grid(row=2, column=2,sticky = "ew",pady=(20, 0), padx=(20, 20))
 
-
+        #frame for holding the label
         self.textframe = customtkinter.CTkScrollableFrame(master=self.right_column, label_text="Your Trip Planner",width=250)
         self.textframe.grid(pady=(20, 0), padx=(20, 20), row=3, column=2, columnspan=2, sticky="nsew")
 
-        
-
+        #label containing the response from the ai
         self.info_label = customtkinter.CTkLabel(master = self.textframe, anchor='e',text= " ",wraplength=295)
         self.info_label.grid(row=0, column=0, sticky="w")
 
@@ -177,8 +179,6 @@ class App(customtkinter.CTk):
         self.num_of_markers+=1
         if self.num_of_markers == 1:
             self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="Start"))
-            #self.latitude = current_position[0]
-            #self.longitude = current_position[1]
             self.start_address = reverse_geocode(latitude=current_position[0], longitude= current_position[1])
         elif self.num_of_markers == 2:
             self.marker_list.append(self.map_widget.set_marker(current_position[0], current_position[1],text="End"))
@@ -186,6 +186,7 @@ class App(customtkinter.CTk):
             self.longitude = current_position[1]
             self.end_address = reverse_geocode(latitude=current_position[0], longitude= current_position[1])
         
+        #If the number of markers is greater than 2, get a response and show a route
         if len(self.marker_list) >= 2:
             
             self.start_and_end_point = [(self.marker_list[0].position[1],self.marker_list[0].position[0]),(self.marker_list[1].position[1],self.marker_list[1].position[0])]
@@ -203,7 +204,7 @@ class App(customtkinter.CTk):
     
 
 
-            
+    #Function for asking the ai for a recommendation on the best mode of transport between 2 points            
     def ask_for_recommendation(self):
         prompt = "Recommend the ideal mode of transport (car and taxi are also options) for someone traveling between: " + self.start_address + " to " + self.end_address + " which has a distance of: " + str(self.distance) + " in meters (convert this to miles) with your response including the names of the places of start and end points and in bullet points containing the modes of transport in this format recommended: your recommendation (new line)other mode of transportation (new line)Other mode of transportation and the costs of the public transport modes"
         self.info_label.configure(text="Waiting for response...", anchor='w')
@@ -219,13 +220,11 @@ class App(customtkinter.CTk):
         self.get_answer_thread = threading.Thread(target=run_get_answer)
         self.get_answer_thread.start()
 
-    
-    
+    #Getting the answer from the ai for addtional questions
     def user_input(self,event=None):
         prompt = self.userinput_entry.get()
         self.answer = get_answer(prompt)
         self.info_label.configure(text=self.answer, anchor='w')
-        #print(self.answer) in self.textframe
         
  
     #clears the placed marker(s) and path 
@@ -238,11 +237,12 @@ class App(customtkinter.CTk):
         self.pick_others.configure(state = "disabled")
         self.get_picked.configure(state= "disabled")
         self.speak_button.configure(state = "disabled")
-    
-    def text_to_speech(self):
-        play_text_as_audio(self.answer['content'])
-    
 
+    #converts ai text to speech
+    def text_to_speech(self):
+        play_text_as_audio(self.answer)
+    
+    #Toggles between mic on and off
     def toggle_microphone(self):
         if self.toggle_state:
             self.start_mic()
@@ -251,15 +251,19 @@ class App(customtkinter.CTk):
             self.end_mic()
             self.toggle_state = True
     
+    #Starts recording
     def start_mic(self):
         speech_recognizer.start_recording()
         self.listen_button.configure(text= "Stop Listening")
     
+    #ends recording
     def end_mic(self):
         speech_recognizer.stop_recording("voice_recording.wav")
         self.listen_button.configure(text= "Start Listening")
         self.transcript = speech_recognizer.transcribe_audio("voice_recording.wav")
-        get_answer(self.transcript)
+        self.answer = get_answer(self.transcript)
+        self.info_label.configure(text=self.answer, anchor='w')
+        self.speak_button.configure(state = "normal")
 
     
     #creates a popup window for picking others up
