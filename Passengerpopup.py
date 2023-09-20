@@ -12,6 +12,7 @@ class PassengerPopup(customtkinter.CTkToplevel):
     def __init__(self,passenger_data, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.count = None
+        self.title ("Drivers Available")
         self.passenger_data = passenger_data #sets passenger data
         self.geometry("400x300")    
         self.driver_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindDriver) #refresh button to find current drivers avaiable

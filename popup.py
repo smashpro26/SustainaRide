@@ -12,6 +12,7 @@ class PickOthers(customtkinter.CTkToplevel):
         #configuring the window
         self.driver_start_coordinates = driver_start_coordinates
         self.geometry("400x300")
+        self.title ("Driver Details")
 
         #entry for the driver's name
         self.enter_name= customtkinter.CTkEntry(master=self,placeholder_text="Enter your name: ")
@@ -91,6 +92,7 @@ class GetPicked(customtkinter.CTkToplevel):
         self.passenger_start_coordinates = passenger_start_coordinates
         self.passenger_end_coordinates = passenger_end_coordinates
         self.geometry("400x300")
+        self.title("Passenger Details")
         
         #entry for passenger name
         self.enter_name= customtkinter.CTkEntry(master=self,placeholder_text="Enter your name: ")

@@ -15,6 +15,7 @@ class DriverPopup(customtkinter.CTkToplevel):
         super().__init__(*args, **kwargs)
         self.driver_name = driver_name #sets driver's name
         self.geometry("400x300")    
+        self.title ("Passengers Available")
         self.passenger_refreshbtn = customtkinter.CTkButton(master=self, text='Refresh', command=self.FindPassenger) #Refresh button to Find up-to-date passengers
         self.passenger_refreshbtn.grid(row=1, column=0, sticky='nsew') #aligns button
 
