@@ -30,7 +30,7 @@ class AcceptPassenger(customtkinter.CTkToplevel):
         self.end_address = reverse_geocode(self.passenger_end_lat, self.passenger_end_lon)
 
         #Displays the passengers info
-        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,text= f"Passenger Name: {self.passenger_info['passenger_name']}, " f"Age: {self.passenger_info['passenger_age']}, "f"Pickup Location: {self.start_address}, "f"Final Destination: {self.end_address}")
+        self.passenger_label = customtkinter.CTkLabel(master = self.passenger_requests_frame,wraplength=490,text= f"Passenger Name: {self.passenger_info['passenger_name']}, " f"Age: {self.passenger_info['passenger_age']}, "f"Pickup Location: {self.start_address}, "f"Final Destination: {self.end_address}")
         self.passenger_label.grid(pady=(20, 0), padx=(20, 20), row=0, column=0,sticky = "ew")
 
         #accepting the passenger
