@@ -50,8 +50,6 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(2,weight = 0)
         #left column does not resize when window is resized, howecer right column and row is resized to be more proportionate
 
-
-
         self.frame_left = customtkinter.CTkFrame(master=self, width=150, corner_radius=0, fg_color=None)
         self.frame_left.grid(row=0, column=0, padx=0, pady=0, sticky="nsew")
         #left frame is aligned
@@ -80,13 +78,21 @@ class App(customtkinter.CTk):
                                                 command=self.clear_marker_event)
         self.button_2.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
 
-        #Creating a button for people trying to find someone to carpool with to be driven somewhere
-        self.pick_others = customtkinter.CTkButton(master=self.frame_left, text="Pick others up", state="disabled",command=self.pick_others_up)
-        self.pick_others.grid(pady=(20, 0), padx=(20, 20), row=2, column=0)
+        #creating a frame for holding carpooling elements
+        self.carpool_frame = customtkinter.CTkFrame(master=self.frame_left)
+        self.carpool_frame.grid(pady=(20, 0), padx=(20, 20), row=2, column=0)
 
+        #creating a label for the carpooling frame
+        self.carpool_label = customtkinter.CTkLabel(master=self.carpool_frame,text="Carpooling")
+        self.carpool_label.grid(pady=(10, 0), padx=(20, 20), row=0, column=0)
 
-        self.get_picked = customtkinter.CTkButton(master=self.frame_left, text="Get picked up", state = "disabled", command=self.get_picked_up)
-        self.get_picked.grid(pady=(20, 0), padx=(20, 20), row=3, column=0)
+        #Creating a button for people driving
+        self.pick_others = customtkinter.CTkButton(master=self.carpool_frame, text="Pick others up", state="disabled",command=self.pick_others_up)
+        self.pick_others.grid(pady=(20, 0), padx=(20, 20), row=1, column=0)
+
+        #Creating a button for passengers
+        self.get_picked = customtkinter.CTkButton(master=self.carpool_frame, text="Get picked up", state = "disabled", command=self.get_picked_up)
+        self.get_picked.grid(pady=(20, 20), padx=(20, 20), row=2, column=0)
         
 
 
