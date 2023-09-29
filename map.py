@@ -4,7 +4,8 @@ from openrouteservice.directions import directions
 import customtkinter
 from tkintermapview import TkinterMapView
 import directions
-from llama_ai import get_answer
+#from llama_ai import get_answer
+from recommendation_ai import get_recommendation
 from Reversegeocode import reverse_geocode
 from popup import PickUpOthers, GetPickedUp
 from text_to_speech import play_text_as_audio, stop_audio_thread
@@ -216,7 +217,7 @@ class App(customtkinter.CTk):
         self.info_label.configure(text="Waiting for response...", anchor='w')
 
         def run_get_answer():
-            result = get_answer(prompt)
+            result = get_recommendation(prompt)
             self.answer = result
             self.info_label.configure(text=result, anchor='w')
             print(str(self.start_address))
@@ -229,7 +230,7 @@ class App(customtkinter.CTk):
     #Getting the answer from the ai for addtional questions
     def user_input(self,event=None):
         prompt = self.userinput_entry.get()
-        self.answer = get_answer(prompt)
+        self.answer = get_recommendation(prompt)
         self.info_label.configure(text=self.answer, anchor='w')
         
  
@@ -267,7 +268,7 @@ class App(customtkinter.CTk):
         speech_recognizer.stop_recording("voice_recording.wav")
         self.listen_button.configure(text= "Start Listening")
         self.transcript = speech_recognizer.transcribe_audio("voice_recording.wav")
-        self.answer = get_answer(self.transcript)
+        self.answer = get_recommendation(self.transcript)
         self.info_label.configure(text=self.answer, anchor='w')
         self.speak_button.configure(state = "normal")
 
