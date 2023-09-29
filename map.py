@@ -16,7 +16,7 @@ customtkinter.set_default_color_theme("blue")
 class App(customtkinter.CTk):
 
     #Configuring the app
-    APP_NAME = "Uber_Transport_SS"
+    APP_NAME = "SustainaRide"
     WIDTH = 1400
     HEIGHT = 800
 
