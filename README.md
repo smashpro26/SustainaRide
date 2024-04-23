@@ -1,2 +1,2 @@
 # SustainaRide
-\this project is made by team CodeBritannic
+this project is made by team CodeBritannic
